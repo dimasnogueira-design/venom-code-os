@@ -1,4 +1,4 @@
-import { ArrowRight, Bot, Braces, Check, Globe2, Layers3, ShoppingCart, Sparkles, Zap } from "lucide-react";
+import { ArrowRight, Bot, Braces, Check, Gauge, Globe2, Layers3, Palette, ShoppingCart, Sparkles, TrendingUp, Zap } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { HeroVideo } from "@/components/hero-video";
 import { MobileMenu } from "@/components/mobile-menu";
@@ -8,12 +8,26 @@ const services = [
   { icon: ShoppingCart, number: "02", title: "E-commerce que vende", text: "Lojas pensadas para reduzir atrito, fortalecer percepção de valor e transformar navegação em compra." },
   { icon: Braces, number: "03", title: "Sistemas sob medida", text: "Produtos digitais, portais e ferramentas internas desenhados em torno da sua operação — não o contrário." },
   { icon: Bot, number: "04", title: "Automação e IA", text: "Fluxos inteligentes que eliminam tarefas repetitivas, conectam dados e devolvem tempo para o seu time." },
+  { icon: Palette, number: "05", title: "Branding e identidade", text: "Marcas com estratégia, linguagem e direção visual para ocupar um espaço próprio — e ser lembradas por isso." },
+  { icon: TrendingUp, number: "06", title: "Performance e crescimento", text: "Experimentos, dados e evolução contínua para transformar presença digital em resultado mensurável." },
+];
+
+const capabilities = [
+  { icon: Globe2, title: "Websites", text: "Presença que converte" },
+  { icon: ShoppingCart, title: "E-commerce", text: "Vendas sem limites" },
+  { icon: Braces, title: "Sistemas", text: "Operação sob controle" },
+  { icon: Bot, title: "IA & Automação", text: "Eficiência que escala" },
+  { icon: Palette, title: "Branding", text: "Identidade que conecta" },
+  { icon: Gauge, title: "Performance", text: "Resultado mensurável" },
 ];
 
 const routes = [
-  { tag: "LANÇAR", title: "Preciso tirar uma ideia do papel", text: "Do conceito ao primeiro produto no ar, com foco no que gera valor desde o início.", cta: "Criar meu projeto" },
-  { tag: "EVOLUIR", title: "Meu digital não representa meu negócio", text: "Reposicionamos experiência, discurso e tecnologia para sua marca parecer tão forte quanto ela é.", cta: "Reposicionar agora" },
-  { tag: "ESCALAR", title: "Minha operação trava o crescimento", text: "Mapeamos gargalos e construímos sistemas e automações que acompanham o próximo nível.", cta: "Ganhar escala" },
+  { icon: Globe2, tag: "PRESENÇA", title: "Site institucional", text: "Sua marca no próximo nível, com narrativa, impacto e velocidade.", cta: "Construir site" },
+  { icon: ShoppingCart, tag: "VENDAS", title: "E-commerce", text: "Uma experiência de compra direta, confiável e pronta para crescer.", cta: "Criar minha loja" },
+  { icon: Braces, tag: "OPERAÇÃO", title: "Sistema web", text: "Processos sob controle em uma ferramenta desenhada para o seu negócio.", cta: "Desenhar sistema" },
+  { icon: Bot, tag: "ESCALA", title: "IA & automações", text: "Menos repetição, mais inteligência e tempo devolvido para o seu time.", cta: "Automatizar operação" },
+  { icon: Palette, tag: "IDENTIDADE", title: "Branding digital", text: "Estratégia e expressão visual para uma marca impossível de confundir.", cta: "Fortalecer marca" },
+  { icon: TrendingUp, tag: "CRESCIMENTO", title: "Performance", text: "Dados, evolução e decisões melhores para gerar resultado real.", cta: "Acelerar resultado" },
 ];
 
 const process = [
@@ -50,6 +64,12 @@ export default function Home() {
         <div className="hero-index"><span>SCROLL</span><i /></div>
       </section>
 
+      <section className="capability-rail" aria-label="Capacidades da VENOM CODE">
+        <div className="shell capability-grid">
+          {capabilities.map(({ icon: Icon, title, text }) => <div className="capability-item" key={title}><Icon size={22} /><div><strong>{title}</strong><span>{text}</span></div></div>)}
+        </div>
+      </section>
+
       <section className="manifesto shell section-pad">
         <p className="section-kicker">VENOM CODE / 001</p>
         <div className="manifesto-grid">
@@ -68,8 +88,8 @@ export default function Home() {
       </section>
 
       <section className="routing shell section-pad">
-        <p className="section-kicker">POR ONDE COMEÇAMOS?</p><h2>Escolha o problema.<br />A gente encontra o caminho.</h2>
-        <div className="route-grid">{routes.map((route) => <a href="#contato" className="route-card" key={route.tag}><span>{route.tag}</span><h3>{route.title}</h3><p>{route.text}</p><b>{route.cta} <ArrowRight size={17} /></b></a>)}</div>
+        <p className="section-kicker">SOLUÇÕES PARA GRANDES IDEIAS</p><h2>O que você precisa<br />construir?</h2>
+        <div className="route-grid">{routes.map(({ icon: Icon, ...route }) => <a href="#contato" className="route-card" key={route.title}><div className="route-icon"><Icon size={30} /></div><span>{route.tag}</span><h3>{route.title}</h3><p>{route.text}</p><b>{route.cta} <ArrowRight size={17} /></b></a>)}</div>
       </section>
 
       <section className="case-feature section-pad" id="cases">
@@ -92,4 +112,3 @@ export default function Home() {
     </main>
   );
 }
-
