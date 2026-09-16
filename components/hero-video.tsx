@@ -14,10 +14,9 @@ export function HeroVideo() {
 
   return (
     <div className={`hero-media ${ended ? "is-ended" : ""}`}>
-      <video ref={videoRef} muted playsInline preload="metadata" poster="/media/venom-code-poster.jpg" onEnded={() => setEnded(true)} aria-label="Identidade cinematográfica VENOM CODE">
-        <source src="/media/venom-code-hero.mp4" type="video/mp4" />
+      <video ref={videoRef} muted playsInline preload="auto" poster="/media/venom-code-poster.png" onEnded={() => setEnded(true)} aria-label="Identidade cinematográfica VENOM CODE">
+        <source src="/media/venom-code-hero-v2.mp4" type="video/mp4" />
       </video>
     </div>
   );
 }
-
