@@ -1,109 +1,53 @@
-import { ArrowRight, Bot, Braces, Check, Gauge, Globe2, Layers3, Palette, ShoppingCart, Sparkles, TrendingUp, Zap } from "lucide-react";
+import Image from "next/image";
+import type { Metadata } from "next";
+import { ArrowRight, Bot, Braces, Check, Gauge, Globe2, Palette, ShoppingCart, Zap } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { HeroVideo } from "@/components/hero-video";
 import { MobileMenu } from "@/components/mobile-menu";
 import { SnakeAI } from "@/components/snake-ai";
+import { ServiceExplorer } from "@/components/service-explorer";
+import { ProcessExperience } from "@/components/process-experience";
 import "./hero.css";
+import "./experience.css";
 
-const services = [
-  { icon: Globe2, number: "01", title: "Sites que posicionam", text: "Landing pages e sites institucionais com narrativa, velocidade e presença para converter atenção em oportunidade." },
-  { icon: ShoppingCart, number: "02", title: "E-commerce que vende", text: "Lojas pensadas para reduzir atrito, fortalecer percepção de valor e transformar navegação em compra." },
-  { icon: Braces, number: "03", title: "Sistemas sob medida", text: "Produtos digitais, portais e ferramentas internas desenhados em torno da sua operação — não o contrário." },
-  { icon: Bot, number: "04", title: "Automação e IA", text: "Fluxos inteligentes que eliminam tarefas repetitivas, conectam dados e devolvem tempo para o seu time." },
-  { icon: Palette, number: "05", title: "Branding e identidade", text: "Marcas com estratégia, linguagem e direção visual para ocupar um espaço próprio — e ser lembradas por isso." },
-  { icon: TrendingUp, number: "06", title: "Performance e crescimento", text: "Experimentos, dados e evolução contínua para transformar presença digital em resultado mensurável." },
-];
+export const metadata: Metadata = { alternates: { canonical: "/" }, robots: { index: true, follow: true } };
 
 const capabilities = [
-  { icon: Globe2, title: "Websites", text: "Presença que converte" },
-  { icon: ShoppingCart, title: "E-commerce", text: "Vendas sem limites" },
-  { icon: Braces, title: "Sistemas", text: "Operação sob controle" },
-  { icon: Bot, title: "IA & Automação", text: "Eficiência que escala" },
-  { icon: Palette, title: "Branding", text: "Identidade que conecta" },
-  { icon: Gauge, title: "Performance", text: "Resultado mensurável" },
-];
-
-const routes = [
-  { icon: Globe2, tag: "PRESENÇA", title: "Site institucional", text: "Sua marca no próximo nível, com narrativa, impacto e velocidade.", cta: "Construir site" },
-  { icon: ShoppingCart, tag: "VENDAS", title: "E-commerce", text: "Uma experiência de compra direta, confiável e pronta para crescer.", cta: "Criar minha loja" },
-  { icon: Braces, tag: "OPERAÇÃO", title: "Sistema web", text: "Processos sob controle em uma ferramenta desenhada para o seu negócio.", cta: "Desenhar sistema" },
-  { icon: Bot, tag: "ESCALA", title: "IA & automações", text: "Menos repetição, mais inteligência e tempo devolvido para o seu time.", cta: "Automatizar operação" },
-  { icon: Palette, tag: "IDENTIDADE", title: "Branding digital", text: "Estratégia e expressão visual para uma marca impossível de confundir.", cta: "Fortalecer marca" },
-  { icon: TrendingUp, tag: "CRESCIMENTO", title: "Performance", text: "Dados, evolução e decisões melhores para gerar resultado real.", cta: "Acelerar resultado" },
-];
-
-const process = [
-  ["01", "Diagnóstico", "Entendemos o negócio, o problema e a oportunidade antes de falar em tela ou código."],
-  ["02", "Estratégia", "Definimos direção, escopo e prioridades para construir o que realmente precisa existir."],
-  ["03", "Execução", "Design e tecnologia avançam juntos, com entregas visíveis e decisões objetivas."],
-  ["04", "Evolução", "Colocamos no ar, medimos e criamos a base para o produto continuar crescendo."],
+  {icon:Globe2,title:"Websites",text:"Presença que converte"},
+  {icon:ShoppingCart,title:"E-commerce",text:"Jornadas de compra"},
+  {icon:Braces,title:"Sistemas",text:"Operação sob controle"},
+  {icon:Bot,title:"IA & Automação",text:"Inteligência aplicada"},
+  {icon:Palette,title:"Branding",text:"Identidade que conecta"},
+  {icon:Gauge,title:"Performance",text:"Evolução mensurável"},
 ];
 
 export default function Home() {
-  return (
-    <main>
-      <HeroVideo header={<header className="site-header">
-        <a className="wordmark" href="#top" aria-label="VENOM CODE — início"><span>VENOM</span><b>CODE</b></a>
-        <nav className="desktop-nav" aria-label="Navegação principal">
-          <a href="#servicos">Serviços</a><a href="#cases">Cases</a><a href="#processo">Processo</a>
-        </nav>
-        <a className="header-cta" href="#contato">Iniciar projeto <ArrowRight size={15} /></a>
-        <MobileMenu />
-      </header>}>
-          <p className="eyebrow"><span /> Estratégia · Design · Tecnologia</p>
-          <h1>Mais que código.<br /><em>Resultado.</em></h1>
-          <p className="hero-copy">Websites, e-commerce, sistemas, IA e automação para marcas que precisam construir presença, operação e crescimento.</p>
-          <div className="hero-actions">
-            <a className="button primary" href="#contato">Iniciar projeto <ArrowRight size={18} /></a>
-            <SnakeAI />
-          </div>
-      </HeroVideo>
+  return <main className="venom-home">
+    <HeroVideo header={<header className="site-header">
+      <a className="wordmark" href="#top" aria-label="VENOM CODE — início"><span>VENOM</span><b>CODE</b></a>
+      <nav className="desktop-nav" aria-label="Navegação principal"><a href="#servicos">Serviços</a><a href="#cases">Cases</a><a href="#processo">Processo</a><a href="#snake">SNAKE</a></nav>
+      <a className="header-cta" href="#contato">Iniciar projeto <ArrowRight size={15}/></a><MobileMenu/>
+    </header>}>
+      <p className="eyebrow"><span/> Estratégia · Design · Tecnologia</p>
+      <h1>Mais que código.<br/><em>Resultado.</em></h1>
+      <p className="hero-copy">Websites, e-commerce, sistemas, IA e automação para marcas que precisam construir presença, operação e crescimento.</p>
+      <div className="hero-actions"><a className="button primary" href="#contato">Iniciar projeto <ArrowRight size={18}/></a><SnakeAI/></div>
+    </HeroVideo>
 
-      <section className="capability-rail" aria-label="Capacidades da VENOM CODE">
-        <div className="shell capability-grid">
-          {capabilities.map(({ icon: Icon, title, text }) => <div className="capability-item" key={title}><Icon size={22} /><div><strong>{title}</strong><span>{text}</span></div></div>)}
-        </div>
-      </section>
+    <section className="capability-rail" aria-label="Capacidades da VENOM CODE"><div className="shell capability-grid">{capabilities.map(({icon:Icon,title,text})=><a href="#servicos" className="capability-item" key={title}><Icon size={22}/><div><strong>{title}</strong><span>{text}</span></div></a>)}</div></section>
+    <section className="manifesto shell section-pad"><p className="section-kicker">ESTRATÉGIA. IDENTIDADE. TECNOLOGIA. EXECUÇÃO.</p><div className="manifesto-grid"><h2>Sua marca não precisa só existir.<br/><span>Precisa avançar.</span></h2><div><p>Somos um estúdio de tecnologia para negócios que precisam transformar visão em produto, operação e crescimento.</p><p>Você não precisa saber qual tecnologia precisa. Conte o problema. A gente desenha a solução.</p></div></div></section>
 
-      <section className="manifesto shell section-pad">
-        <p className="section-kicker">VENOM CODE / 001</p>
-        <div className="manifesto-grid">
-          <h2>Sua marca não precisa só existir.<br /><span>Precisa avançar.</span></h2>
-          <div><p>Somos um estúdio de tecnologia para negócios que precisam transformar visão em produto, operação e crescimento.</p><p>Sem pacote genérico. Sem tecnologia pela tecnologia. Cada escolha precisa cumprir uma função.</p></div>
-        </div>
-      </section>
+    <ServiceExplorer/>
+    <section className="editorial-break"><div className="shell"><p className="section-kicker">IDEIAS. CÓDIGO. RESULTADO.</p><h2>Não fazemos só sites.<br/><span>Construímos o que o negócio precisa para funcionar.</span></h2><p>Estratégia · Design · Código · IA · Automação · Deploy.</p></div></section>
 
-      <section className="services section-pad" id="servicos">
-        <div className="shell">
-          <div className="section-head"><div><p className="section-kicker">CAPACIDADES</p><h2>O que construímos</h2></div><p>Da primeira impressão à operação inteira: tecnologia que trabalha a favor do negócio.</p></div>
-          <div className="service-grid">
-            {services.map(({ icon: Icon, ...service }) => <article className="service-card" key={service.number}><div className="service-top"><span>{service.number}</span><Icon size={26} /></div><h3>{service.title}</h3><p>{service.text}</p><a href="#contato" aria-label={`Falar sobre ${service.title}`}>Explorar <ArrowRight size={16} /></a></article>)}
-          </div>
-        </div>
-      </section>
+    <section className="venom-case section-pad" id="cases"><div className="shell"><div className="case-heading"><p className="section-kicker">03 / CASE 001 — VENOM CODE</p><span>PRIMEIRO CLIENTE: NÓS MESMOS</span></div><div className="venom-case-grid"><div><h2>Antes de construir para clientes,<br/><em>construímos para nós.</em></h2><p>A identidade, a experiência e a tecnologia se encontram neste site. Um projeto real, publicado e em evolução.</p><ul><li><Check size={16}/> Identidade e direção de arte próprias</li><li><Check size={16}/> Abertura audiovisual e interface responsiva</li><li><Check size={16}/> Serviços interativos e briefing integrado</li><li><Check size={16}/> Código versionado e publicação na Vercel</li></ul><div className="case-tech"><span>Next.js</span><span>React</span><span>GitHub</span><span>Vercel</span></div></div><figure><Image src="/images/venom-brand-study.webp" alt="Estudo de identidade VENOM CODE aplicado a notebook e materiais de marca" width={1536} height={1024} sizes="(max-width: 900px) 100vw, 60vw"/><figcaption>DIREÇÃO DE ARTE / ESTUDO DE APLICAÇÃO DA MARCA</figcaption></figure></div><div className="case-evidence"><div><span>NO AR</span><p>O site que você está explorando.</p></div><div><span>EM EVOLUÇÃO</span><p>Novos fluxos, conteúdo e experiência.</p></div><div><span>PRÓXIMA CAMADA</span><p>SNAKE com conversa por IA e limites de uso.</p></div></div></div></section>
 
-      <section className="routing shell section-pad">
-        <p className="section-kicker">SOLUÇÕES PARA GRANDES IDEIAS</p><h2>O que você precisa<br />construir?</h2>
-        <div className="route-grid">{routes.map(({ icon: Icon, ...route }) => <a href="#contato" className="route-card" key={route.title}><div className="route-icon"><Icon size={30} /></div><span>{route.tag}</span><h3>{route.title}</h3><p>{route.text}</p><b>{route.cta} <ArrowRight size={17} /></b></a>)}</div>
-      </section>
+    <section className="product-labs section-pad"><div className="shell"><div className="section-head"><div><p className="section-kicker">04 / VENOM LABS</p><h2>Ideias em construção.</h2></div><p>Produtos próprios para explorar novas experiências. Ainda em desenvolvimento, sem métricas ou resultados de lançamento.</p></div><div className="product-labs-grid"><article className="lab-music"><div className="lab-topline"><span>MÚSICA / PRODUTO DIGITAL</span><b>EM DESENVOLVIMENTO</b></div><div className="music-wave" aria-hidden="true">{[18,42,65,38,85,100,56,80,40,68,30,48,20].map((height,i)=><i key={i} style={{height:`${height}%`}}/>)}</div><h3>SolMusic<span>Som. Descoberta. Conexão.</span></h3><p>Uma experiência em construção para descoberta, conexão e criação no universo da música.</p><small>VISÃO DO PRODUTO · TELAS EM PREPARAÇÃO</small></article><article className="lab-stay"><div className="lab-topline"><span>HOSPITALIDADE / PRODUTO DIGITAL</span><b>EM DESENVOLVIMENTO</b></div><div className="stay-art" aria-hidden="true"><span>12</span><i/></div><h3>STAY12<span>Chegar. Ficar. Voltar.</span></h3><p>Tecnologia para tornar a jornada de hospedagem mais direta, inteligente e memorável.</p><small>VISÃO DO PRODUTO · TELAS EM PREPARAÇÃO</small></article></div></div></section>
 
-      <section className="case-feature section-pad" id="cases">
-        <div className="shell case-grid">
-          <div className="case-art"><div className="case-mark"><span>VENOM</span><b>CODE</b></div><div className="case-orbit orbit-one" /><div className="case-orbit orbit-two" /><div className="case-glow" /></div>
-          <div className="case-copy"><p className="section-kicker">CASE 001 / PRÓPRIA PELE</p><h2>Construir a marca que prova o método.</h2><p>A VENOM CODE nasce como nosso primeiro case: posicionamento, identidade, experiência e stack integrados em uma única presença digital.</p><ul><li><Check size={15} /> Estratégia e narrativa de marca</li><li><Check size={15} /> Direção visual cinematográfica</li><li><Check size={15} /> Engenharia orientada a performance</li></ul><span className="case-status"><i /> EM EVOLUÇÃO CONTÍNUA</span></div>
-        </div>
-      </section>
+    <ProcessExperience/>
+    <section className="snake-feature section-pad" id="snake"><div className="shell snake-feature-grid"><div><p className="section-kicker">06 / SNAKE — VENOM AI</p><h2>Me conta o que<br/>você quer <em>construir.</em></h2><p>O ponto de partida é o seu negócio. Organize a ideia, escolha um caminho e leve seu contexto para uma conversa com o time.</p><SnakeAI label="Começar meu briefing"/></div><div className="snake-console"><div className="snake-console-head"><Bot size={22}/><span>SNAKE / BRIEFING GUIADO</span></div><p className="snake-example">“Tenho uma escola de inglês e quero captar mais alunos.”</p><ol><li><span>01</span>Conte o objetivo do seu negócio.</li><li><span>02</span>Escolha o caminho que quer explorar.</li><li><span>03</span>Revise o contexto e envie ao time.</li></ol><p className="snake-state">Conversa por IA em preparação. O briefing guiado já está disponível.</p></div></div></section>
 
-      <section className="labs shell section-pad">
-        <div className="section-head"><div><p className="section-kicker">VENOM LABS</p><h2>Em desenvolvimento</h2></div><p>Produtos próprios onde testamos novas ideias antes de levá-las para o mercado.</p></div>
-        <div className="lab-grid"><article><div className="lab-icon sol"><Sparkles /></div><span>PRODUTO / MÚSICA</span><h3>SolMusic</h3><p>Uma nova experiência para descoberta, conexão e criação no universo da música.</p><b>EM DESENVOLVIMENTO</b></article><article><div className="lab-icon stay"><Layers3 /></div><span>PRODUTO / HOSPITALIDADE</span><h3>STAY12</h3><p>Tecnologia para tornar a jornada de hospedagem mais direta, inteligente e memorável.</p><b>EM DESENVOLVIMENTO</b></article></div>
-      </section>
-
-      <section className="process section-pad" id="processo"><div className="shell"><p className="section-kicker">COMO OPERAMOS</p><h2>Clareza antes da velocidade.<br />Velocidade depois da clareza.</h2><div className="process-list">{process.map(([n,t,d]) => <article key={n}><span>{n}</span><h3>{t}</h3><p>{d}</p></article>)}</div></div></section>
-
-      <section className="contact section-pad" id="contato"><div className="shell contact-grid"><div><p className="section-kicker">PRÓXIMO MOVIMENTO</p><h2>Tem um problema real?<br /><em>Vamos atacar.</em></h2><p>Conte o momento do seu negócio. A gente responde com clareza sobre o melhor caminho — mesmo que ele não comece por código.</p><div className="contact-note"><Zap size={18} /><span>Resposta humana. Conversa direta. Sem apresentação genérica.</span></div></div><ContactForm /></div></section>
-
-      <footer><div className="shell footer-main"><a className="wordmark" href="#top"><span>VENOM</span><b>CODE</b></a><p>Ideias. Código. Resultado.</p><div><a href="#servicos">Serviços</a><a href="#cases">Cases</a><a href="#contato">Contato</a></div></div><div className="shell footer-bottom"><span>© 2026 VENOM CODE</span><span>BUILD · EXECUTE · EVOLVE</span></div></footer>
-    </main>
-  );
+    <section className="contact section-pad" id="contato"><div className="shell contact-grid"><div><p className="section-kicker">07 / PRÓXIMO MOVIMENTO</p><h2>Tem um problema real?<br/><em>Vamos atacar.</em></h2><p>Conte o momento do seu negócio. A gente responde com clareza sobre o melhor caminho — mesmo que ele não comece por código.</p><div className="contact-note"><Zap size={18}/><span>Resposta humana. Conversa direta. Sem apresentação genérica.</span></div></div><ContactForm/></div></section>
+    <footer><div className="shell footer-main"><a className="wordmark" href="#top"><span>VENOM</span><b>CODE</b></a><p>Ideias. Código. Resultado.</p><div><a href="#servicos">Serviços</a><a href="#cases">Cases</a><a href="#contato">Contato</a></div></div><div className="shell footer-bottom"><span>© 2026 VENOM CODE</span><span>BUILD · EXECUTE · EVOLVE</span></div></footer>
+  </main>;
 }

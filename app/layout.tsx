@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     description: "Estratégia, design e tecnologia para negócios que querem avançar.",
     type: "website",
     locale: "pt_BR",
+    images: [{ url: "/images/venom-brand-study.webp", width: 1536, height: 1024, alt: "VENOM CODE — Estratégia, identidade e tecnologia" }],
   },
 };
 

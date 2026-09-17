@@ -62,3 +62,19 @@
   .hero-experience *, .hero-experience *::before, .hero-experience *::after { animation: none !important; transition: none !important; }
   .hero-experience .hero-media video { display: none; }
 }
+/* Playback starts only from an explicit click, with the original soundtrack. */
+.hero-experience .hero { container-type: size; }
+.hero-experience .hero-media video { object-fit: contain; object-position: center; }
+.hero-experience[data-phase="welcome"] .hero-navigation,
+.hero-experience[data-phase="welcome"] .hero-content,
+.hero-experience[data-phase="welcome"] .hero-index { visibility: hidden; opacity: 0; }
+.intro-welcome { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; }
+.intro-welcome h2 { font-size:clamp(42px,5vw,76px); line-height:1; letter-spacing:-.06em; margin:20px 0; }
+.intro-welcome h2 em { color:var(--lime); font-style:normal; }
+.intro-welcome > p:not(.eyebrow) { color:#c1c6c2; line-height:1.6; margin:0 0 28px; }
+.intro-enter { background:transparent; color:#e0e5da; border:0; border-bottom:1px solid #718065; padding:15px 0; margin-top:12px; min-height:44px; font:inherit; font-size:14px; cursor:pointer; }
+.intro-controls { position:absolute; width:min(100cqw,177.7778cqh); height:min(56.25cqw,100cqh); top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; }
+.intro-controls button { pointer-events:auto; }
+.intro-controls .intro-skip { right:2.5%; bottom:11%; width:16%; min-width:140px; height:12%; min-height:48px; padding:14px 20px; background:#050806; justify-content:center; font-size:14px; }
+.intro-sound { position:absolute; left:20px; bottom:20px; min-height:44px; padding:12px 18px; border:1px solid #647051; background:#050806; color:#e7eedf; font:inherit; font-size:12px; cursor:pointer; }
+@media(max-width:900px) { .hero-experience .hero { container-type:size; } .intro-welcome { justify-content:flex-end; padding-bottom:64px; width:calc(100% - 40px); } .intro-welcome h2 { font-size:46px; } .intro-controls .intro-skip { bottom:11%; right:2%; min-width:124px; font-size:12px; padding:10px; } .intro-sound { left:8px; bottom:3%; padding:10px; } }
