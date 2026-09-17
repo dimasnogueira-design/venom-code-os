@@ -2,6 +2,8 @@ import { ArrowRight, Bot, Braces, Check, Gauge, Globe2, Layers3, Palette, Shoppi
 import { ContactForm } from "@/components/contact-form";
 import { HeroVideo } from "@/components/hero-video";
 import { MobileMenu } from "@/components/mobile-menu";
+import { SnakeAI } from "@/components/snake-ai";
+import "./hero.css";
 
 const services = [
   { icon: Globe2, number: "01", title: "Sites que posicionam", text: "Landing pages e sites institucionais com narrativa, velocidade e presença para converter atenção em oportunidade." },
@@ -40,29 +42,22 @@ const process = [
 export default function Home() {
   return (
     <main>
-      <header className="site-header">
+      <HeroVideo header={<header className="site-header">
         <a className="wordmark" href="#top" aria-label="VENOM CODE — início"><span>VENOM</span><b>CODE</b></a>
         <nav className="desktop-nav" aria-label="Navegação principal">
           <a href="#servicos">Serviços</a><a href="#cases">Cases</a><a href="#processo">Processo</a>
         </nav>
         <a className="header-cta" href="#contato">Iniciar projeto <ArrowRight size={15} /></a>
         <MobileMenu />
-      </header>
-
-      <section className="hero" id="top">
-        <HeroVideo />
-        <div className="hero-shade" />
-        <div className="hero-content shell">
+      </header>}>
           <p className="eyebrow"><span /> Estratégia · Design · Tecnologia</p>
           <h1>Mais que código.<br /><em>Resultado.</em></h1>
-          <p className="hero-copy">Construímos experiências digitais com presença, inteligência e precisão — para marcas que não vieram passar despercebidas.</p>
+          <p className="hero-copy">Websites, e-commerce, sistemas, IA e automação para marcas que precisam construir presença, operação e crescimento.</p>
           <div className="hero-actions">
-            <a className="button primary" href="#contato">Quero construir algo grande <ArrowRight size={18} /></a>
-            <a className="button ghost" href="#cases">Ver projetos</a>
+            <a className="button primary" href="#contato">Iniciar projeto <ArrowRight size={18} /></a>
+            <SnakeAI />
           </div>
-        </div>
-        <div className="hero-index"><span>SCROLL</span><i /></div>
-      </section>
+      </HeroVideo>
 
       <section className="capability-rail" aria-label="Capacidades da VENOM CODE">
         <div className="shell capability-grid">
