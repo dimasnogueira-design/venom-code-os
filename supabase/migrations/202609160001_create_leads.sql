@@ -15,18 +15,7 @@ create table if not exists public.leads (
 
 alter table public.leads enable row level security;
 
-create policy "public can submit leads"
-on public.leads for insert
-to anon
-with check (
-  status = 'new'
-  and source = 'landing-page'
-  and char_length(name) between 2 and 120
-  and char_length(message) between 2 and 4000
-);
-
-revoke select, update, delete on public.leads from anon, authenticated;
-grant insert on public.leads to anon;
+revoke all on public.leads from anon, authenticated;
 
 create index if not exists leads_created_at_idx on public.leads (created_at desc);
 create index if not exists leads_status_idx on public.leads (status);

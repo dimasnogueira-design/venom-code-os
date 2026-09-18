@@ -1,5 +1,5 @@
-import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
+import { createServerSupabase } from "@/lib/venom-ai/supabase";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -15,12 +15,11 @@ export async function POST(request: Request) {
       interest: String(body.interest ?? "").trim().slice(0, 100),
       message: String(body.message ?? "").trim().slice(0, 4000),
       source: "landing-page",
+      session_id: /^[0-9a-f-]{36}$/i.test(String(body.sessionId ?? "")) ? String(body.sessionId) : null,
     };
     if (!lead.name || !emailPattern.test(lead.email) || !lead.whatsapp || !lead.interest || !lead.message) return NextResponse.json({ error: "Preencha os campos obrigatórios corretamente." }, { status: 400 });
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!url || !key) return NextResponse.json({ error: "Formulário em configuração. Fale conosco novamente em instantes." }, { status: 503 });
-    const supabase = createClient(url, key, { auth: { persistSession: false } });
+    const supabase = createServerSupabase();
+    if (!supabase) return NextResponse.json({ error: "Formulário em configuração. Fale conosco novamente em instantes." }, { status: 503 });
     const { error } = await supabase.from("leads").insert(lead);
     if (error) throw error;
     return NextResponse.json({ ok: true });

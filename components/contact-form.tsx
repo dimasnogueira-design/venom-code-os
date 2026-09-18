@@ -27,7 +27,7 @@ export function ContactForm() {
     const form=event.currentTarget;
     const data=Object.fromEntries(new FormData(form));
     try {
-      const response=await fetch("/api/leads",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+      const response=await fetch("/api/leads",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...data,sessionId:localStorage.getItem("venom-snake-session")||undefined})});
       const result=await response.json().catch(()=>({}));
       if(response.ok){setState("success");form.reset();setDraft("");setInterest("");setContext(false);return;}
       setState("error");setError(result.error||"Não foi possível enviar agora. Tente novamente.");
