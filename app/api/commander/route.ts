@@ -1,6 +1,9 @@
 import OpenAI from 'openai';
 import { NextResponse } from 'next/server';
 
+const MAX_BODY_BYTES = 16_384;
+const MAX_MISSION_CHARACTERS = 4_000;
+
 const SYSTEM = `Você é COMMANDER, o orquestrador central da VENOM CODE, uma agência digital AI-native.
 Sua função não é simplesmente responder ao usuário: é transformar uma missão comercial confusa em um plano operacional profissional.
 
@@ -56,21 +59,45 @@ function simulateCommander(mission: string) {
 
 export async function POST(request: Request) {
   try {
-    const { mission } = await request.json();
-    if (!mission || typeof mission !== 'string' || !mission.trim()) {
+    const contentType = request.headers.get('content-type') || '';
+    if (!contentType.toLowerCase().startsWith('application/json')) {
+      return NextResponse.json({ error: 'Envie a missão em JSON.' }, { status: 415 });
+    }
+    const declaredLength = Number(request.headers.get('content-length') || 0);
+    if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+      return NextResponse.json({ error: 'Missão muito longa.' }, { status: 413 });
+    }
+    const rawBody = await request.text();
+    if (new TextEncoder().encode(rawBody).byteLength > MAX_BODY_BYTES) {
+      return NextResponse.json({ error: 'Missão muito longa.' }, { status: 413 });
+    }
+    let body: unknown;
+    try {
+      body = JSON.parse(rawBody);
+    } catch {
+      return NextResponse.json({ error: 'JSON inválido.' }, { status: 400 });
+    }
+    const mission = typeof body === 'object' && body !== null && 'mission' in body
+      ? (body as { mission?: unknown }).mission
+      : undefined;
+    if (typeof mission !== 'string' || !mission.trim()) {
       return NextResponse.json({ error: 'Missão obrigatória.' }, { status: 400 });
+    }
+    const normalizedMission = mission.trim();
+    if (normalizedMission.length > MAX_MISSION_CHARACTERS) {
+      return NextResponse.json({ error: 'A missão deve ter no máximo 4.000 caracteres.' }, { status: 413 });
     }
 
     // Zero-cost development mode. Set COMMANDER_MODE=live when API billing is available.
     const liveMode = process.env.COMMANDER_MODE === 'live' && Boolean(process.env.OPENAI_API_KEY);
-    if (!liveMode) return NextResponse.json(simulateCommander(mission));
+    if (!liveMode) return NextResponse.json(simulateCommander(normalizedMission));
 
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const response = await client.responses.create({
       model: process.env.OPENAI_MODEL || 'gpt-5.6-terra',
       input: [
         { role: 'system', content: SYSTEM },
-        { role: 'user', content: `MISSÃO DO DIRETOR:\n${mission.trim()}` },
+        { role: 'user', content: 'MISSÃO DO DIRETOR:\n' + normalizedMission },
       ],
     });
 
