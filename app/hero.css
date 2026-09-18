@@ -13,6 +13,8 @@
 .hero-experience .hero h1 { font-size: clamp(48px,5vw,76px); line-height: .97; letter-spacing: -.065em; margin: 26px 0; }
 .hero-experience .hero-copy { max-width: 440px; font-size: 17px; line-height: 1.7; text-wrap: pretty; }
 .hero-experience .hero-actions { gap: 12px; margin-top: 32px; }
+.hero-system { display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:22px; color:#8f9d87; font-family:var(--font-mono); font-size:8px; letter-spacing:1.1px; }
+.hero-system span:first-child { color:var(--lime); }
 .hero-experience .hero-index { transform: none; right: 32px; color: #ccd3c8; min-height: 44px; }
 .hero-experience .site-header { background: rgba(2,3,3,.36); }
 .hero-experience[data-phase="intro"] .hero-navigation,
@@ -45,6 +47,8 @@
 .snake-float-mark img { width:100%; height:100%; object-fit:cover; transform:scale(1.08); }
 .snake-float:hover .snake-float-mark,.snake-float:focus-visible .snake-float-mark { transform:translateY(-4px) scale(1.03); border-color:var(--lime); box-shadow:0 0 28px #a4ff0028; }
 .snake-float:hover .snake-float-label,.snake-float:focus-visible .snake-float-label { color:var(--lime); border-color:#7fa64e; }
+.venom-home:has(.hero-experience[data-phase="welcome"]) .snake-float,
+.venom-home:has(.hero-experience[data-phase="intro"]) .snake-float { opacity:0; visibility:hidden; pointer-events:none; transform:translateY(14px); }
 @keyframes snake-signal { 0% { opacity:.65; transform:scale(.82); } 65%,100% { opacity:0; transform:scale(1.28); } }
 @media(max-width:700px) {
   .snake-float { right:14px; bottom:14px; }
@@ -59,15 +63,15 @@
 @media(max-width:900px) {
   .hero-experience .hero { min-height: 790px; max-height: none; align-items: flex-end; }
   .hero-experience .hero-media { bottom: auto; height: 58%; transition: height .8s ease; }
-  .hero-experience .hero-media video, .hero-experience .hero-poster { object-position: 68% center; }
-  .hero-experience .hero-poster { object-fit: contain; object-position: center top; padding-top: 78px; }
-  .hero-experience .hero-media video { object-fit: contain; }
+  .hero-experience .hero-media video, .hero-experience .hero-poster { object-fit:cover; object-position: 62% center; }
+  .hero-experience .hero-poster { padding-top:0; }
   .hero-experience .hero-shade { background: linear-gradient(0deg,#050606 0%,#050606 39%,rgba(5,6,6,.96) 45%,rgba(5,6,6,.05) 67%,transparent); }
   .hero-experience .hero-content { width: calc(100% - 40px); padding: 0 0 44px; }
   .hero-experience .hero h1 { font-size: clamp(38px,8.8vw,58px); margin: 20px 0; }
   .hero-experience .hero-copy { max-width: 460px; font-size: 15px; line-height: 1.65; }
   .hero-experience .hero-actions { display: flex; flex-wrap: wrap; margin-top: 24px; }
   .hero-experience .hero-actions > .button { flex: 1; white-space: nowrap; padding-inline: 15px; }
+  .hero-system { max-width:460px; line-height:1.6; }
   .hero-experience .eyebrow { font-size: 9px; letter-spacing: 1.4px; }
   .hero-experience .hero-index { display: none; }
   .hero-experience[data-phase="intro"] .hero-media { height: 100%; }
@@ -79,7 +83,7 @@
 }
 /* Playback starts only from an explicit click, with the original soundtrack. */
 .hero-experience .hero { container-type: size; }
-.hero-experience .hero-media video { object-fit: contain; object-position: center; }
+.hero-experience .hero-media video { object-fit: cover; object-position: center; }
 .hero-experience[data-phase="welcome"] .hero-navigation,
 .hero-experience[data-phase="welcome"] .hero-content,
 .hero-experience[data-phase="welcome"] .hero-index { visibility: hidden; opacity: 0; }

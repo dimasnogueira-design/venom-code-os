@@ -1,8 +1,10 @@
 const stages = [
-  {number:"01",title:"Entender antes de construir.",label:"Diagnóstico",text:"Conversamos sobre o negócio, os usuários, o problema e o que já existe. Se algo não estiver claro, investigamos antes de transformar hipótese em requisito.",output:"Um problema definido e as perguntas que ainda precisam de resposta."},
-  {number:"02",title:"Escolher o próximo movimento.",label:"Estratégia",text:"Organizamos a jornada, as prioridades e a primeira versão. Escopo, dependências e critérios de sucesso ficam visíveis para todos.",output:"Direção visual, escopo e plano de execução alinhados."},
-  {number:"03",title:"Dar forma. Colocar à prova.",label:"Execução",text:"Design e desenvolvimento avançam em entregas que você pode ver e experimentar. Testamos os fluxos, o celular e os detalhes que fazem a experiência funcionar.",output:"Uma versão validada e preparada para publicação."},
-  {number:"04",title:"Publicar é só o começo.",label:"Evolução",text:"Acompanhamos o uso, reunimos feedback e priorizamos melhorias. O próximo passo nasce do que o produto e o negócio realmente precisam.",output:"Aprendizados e prioridades para o próximo ciclo."},
+  {number:"01",title:"Entender antes de construir.",label:"Estratégia",text:"Conversamos sobre o negócio, os usuários, o problema e o que já existe. Organizamos prioridades, riscos e o primeiro objetivo verificável.",output:"Um problema definido e um plano de ação alinhado."},
+  {number:"02",title:"Transformar contexto em experiência.",label:"UX/UI",text:"Desenhamos a jornada, a hierarquia e a linguagem visual. Os fluxos são validados antes de receberem toda a complexidade técnica.",output:"Fluxos e interfaces prontos para execução."},
+  {number:"03",title:"Dar forma ao produto.",label:"Desenvolvimento",text:"Construímos em entregas que você pode ver e experimentar, cuidando da experiência no celular, desempenho e acessibilidade.",output:"Uma versão funcional e testável."},
+  {number:"04",title:"Conectar a operação.",label:"Integrações",text:"Ligamos formulários, bancos de dados, pagamentos, CRM, automações ou IA quando as APIs e permissões permitem.",output:"Fluxos conectados com tratamento de erros e limites claros."},
+  {number:"05",title:"Colocar no ar com segurança.",label:"Deploy",text:"Preparamos ambiente, domínio, variáveis, monitoramento básico e verificações finais antes da publicação.",output:"Produto publicado e acessível no ambiente definido."},
+  {number:"06",title:"Publicar é só o começo.",label:"Evolução",text:"Acompanhamos o uso, reunimos feedback e priorizamos melhorias a partir do que o produto e o negócio realmente precisam.",output:"Aprendizados e prioridades para o próximo ciclo."},
 ];
 
 export function ProcessExperience() {

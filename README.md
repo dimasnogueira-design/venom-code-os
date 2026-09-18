@@ -28,6 +28,10 @@ Execute `supabase/migrations/202609160001_create_leads.sql` no projeto Supabase.
 
 Transformar estratégia, design, tecnologia e growth em uma operação digital repetível, auditável e escalável para e-commerce, landing pages, websites, branding, campanhas, conteúdo, SEO, automações e IA.
 
+## Indexação
+
+A página pública está configurada em `app/page.tsx` com `robots.index: true`, e `app/robots.ts` permite a home enquanto bloqueia `/api/` e `/os`. A área `/os` mantém `noindex` em `app/os/layout.tsx`. Para uma fase privada de desenvolvimento, a alteração deve ser feita primeiro nos metadados de `app/page.tsx`; no lançamento oficial, confirme também `app/robots.ts` e `app/sitemap.ts`.
+
 ## Arquitetura inicial
 
 ```text
