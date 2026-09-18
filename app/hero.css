@@ -32,11 +32,26 @@
 .snake-dialog { color: var(--white); background: #0b0e0b; border: 1px solid #53683a; width: min(480px,calc(100% - 32px)); max-height: calc(100svh - 48px); padding: 0; }
 .snake-dialog::backdrop { background: rgba(0,0,0,.8); }
 .snake-dialog-content { padding: 42px 28px 28px; position: relative; }
-.snake-dialog .snake-symbol { color: var(--lime); margin-bottom: 24px; }
+.snake-dialog .snake-symbol { display:block; width:72px; height:72px; margin-bottom:18px; border:1px solid #53683a; background:#030403; overflow:hidden; }
+.snake-dialog .snake-symbol img { display:block; width:100%; height:100%; object-fit:cover; }
 .snake-dialog h2 { font-size: 34px; margin: 16px 0; letter-spacing: -.04em; }
 .snake-dialog p:not(.eyebrow) { font-size: 16px; line-height: 1.65; color: #bdc5bc; }
 .snake-dialog .button { width: 100%; margin-top: 16px; text-align: center; }
 .snake-close { position: absolute; top: 8px; right: 8px; width: 44px; height: 44px; display: grid; place-items: center; background: none; border: 0; color: var(--white); cursor: pointer; }
+.snake-float { position:fixed; right:24px; bottom:24px; z-index:80; display:flex; align-items:center; gap:10px; padding:0; border:0; background:none; color:var(--white); cursor:pointer; filter:drop-shadow(0 16px 25px #000a); }
+.snake-float::after { content:""; position:absolute; right:0; width:82px; height:82px; border:1px solid #a4ff004f; border-radius:24px; animation:snake-signal 2.8s ease-out infinite; pointer-events:none; }
+.snake-float-label { font-family:var(--font-mono); font-size:9px; letter-spacing:1.3px; text-transform:uppercase; color:#dce7d3; border:1px solid #51643f; border-right:0; background:#080d07e8; backdrop-filter:blur(10px); padding:11px 13px 11px 15px; transform:translateX(10px); transition:color .25s,border-color .25s; }
+.snake-float-mark { position:relative; width:82px; height:82px; display:grid; place-items:center; overflow:hidden; border:1px solid #658441; border-radius:24px; background:#030403; transition:transform .3s,border-color .3s,box-shadow .3s; }
+.snake-float-mark img { width:100%; height:100%; object-fit:cover; transform:scale(1.08); }
+.snake-float:hover .snake-float-mark,.snake-float:focus-visible .snake-float-mark { transform:translateY(-4px) scale(1.03); border-color:var(--lime); box-shadow:0 0 28px #a4ff0028; }
+.snake-float:hover .snake-float-label,.snake-float:focus-visible .snake-float-label { color:var(--lime); border-color:#7fa64e; }
+@keyframes snake-signal { 0% { opacity:.65; transform:scale(.82); } 65%,100% { opacity:0; transform:scale(1.28); } }
+@media(max-width:700px) {
+  .snake-float { right:14px; bottom:14px; }
+  .snake-float-label { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  .snake-float-mark,.snake-float::after { width:68px; height:68px; border-radius:20px; }
+}
+@media(prefers-reduced-motion:reduce) { .snake-float::after { animation:none; } }
 @keyframes hero-menu-in { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes hero-copy-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 @media(min-width:1600px) { .hero-experience .hero-content { width: calc(100% - 160px); } }

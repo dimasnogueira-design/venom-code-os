@@ -49,5 +49,6 @@ export default function Home() {
 
     <section className="contact section-pad" id="contato"><div className="shell contact-grid"><div><p className="section-kicker">07 / PRÓXIMO MOVIMENTO</p><h2>Tem um problema real?<br/><em>Vamos atacar.</em></h2><p>Conte o momento do seu negócio. A gente responde com clareza sobre o melhor caminho — mesmo que ele não comece por código.</p><div className="contact-note"><Zap size={18}/><span>Resposta humana. Conversa direta. Sem apresentação genérica.</span></div></div><ContactForm/></div></section>
     <footer><div className="shell footer-main"><a className="wordmark" href="#top"><span>VENOM</span><b>CODE</b></a><p>Ideias. Código. Resultado.</p><div><a href="#servicos">Serviços</a><a href="#cases">Cases</a><a href="#contato">Contato</a></div></div><div className="shell footer-bottom"><span>© 2026 VENOM CODE</span><span>BUILD · EXECUTE · EVOLVE</span></div></footer>
+    <SnakeAI label="Falar com SNAKE" floating />
   </main>;
 }
