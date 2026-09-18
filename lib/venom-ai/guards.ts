@@ -30,7 +30,9 @@ export function isSpam(message: string) {
 }
 
 export function hashIP(ip: string) {
-  const secret = process.env.VENOM_AI_HASH_SECRET || process.env.OPENAI_API_KEY || "local-development-only";
+  const secret = process.env.VENOM_AI_HASH_SECRET
+    || (process.env.NODE_ENV === "development" ? "local-development-only" : "");
+  if (!secret) throw new Error("hash_secret_unavailable");
   return createHmac("sha256", secret).update(ip || "unknown").digest("hex");
 }
 

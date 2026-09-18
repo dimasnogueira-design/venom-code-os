@@ -1,8 +1,10 @@
 import { randomUUID } from "node:crypto";
 import OpenAI from "openai";
 import { NextResponse } from "next/server";
+import { clientAddress, isSameOrigin, readJsonBody } from "@/lib/api-security";
 import { venomAIConfig, safeNumber } from "@/lib/venom-ai/config";
 import { acquireSession, checkRateLimit, hashIP, isClearlyOffScope, isSpam, normalizeMessage, releaseSession } from "@/lib/venom-ai/guards";
+import { consumeDistributedRateLimit } from "@/lib/venom-ai/distributed-rate-limit";
 import { architectInstructions, briefingInstructions, shouldUseArchitect, snakeInstructions, wantsBriefing } from "@/lib/venom-ai/prompts";
 import { createServerSupabase } from "@/lib/venom-ai/supabase";
 
@@ -23,9 +25,15 @@ export async function POST(request: Request) {
   let lockedSession = "";
   const startedAt = Date.now();
   try {
-    const contentLength = Number(request.headers.get("content-length") || 0);
-    if (contentLength > 12_000) return json({ error: "Mensagem muito grande.", code: "INPUT_TOO_LARGE" }, 413);
-    const body = await request.json();
+    if (!isSameOrigin(request)) return json({ error: "Origem não autorizada.", code: "ORIGIN_DENIED" }, 403);
+    const parsed = await readJsonBody(request, 12_000);
+    if (!parsed.ok) return json({
+      error: parsed.status === 413 ? "Mensagem muito grande." : parsed.error,
+      code: parsed.status === 413 ? "INPUT_TOO_LARGE" : "INVALID_INPUT",
+    }, parsed.status);
+    const body = typeof parsed.value === "object" && parsed.value !== null
+      ? parsed.value as Record<string, unknown>
+      : {};
     if (body.website) return json({ reply: "Posso ajudar com projetos digitais e soluções da VENOM CODE. Me conta o que você quer construir." });
 
     const message = normalizeMessage(body.message);
@@ -35,15 +43,25 @@ export async function POST(request: Request) {
     if (isSpam(message)) return json({ error: "Essa mensagem parece repetitiva. Reescreva em uma frase objetiva.", code: "SPAM" }, 400);
     if (isClearlyOffScope(message)) return json({ sessionId, reply: "Posso ajudar com projetos digitais e soluções da VENOM CODE. Me conta o que você quer construir.", blocked: true });
 
-    const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "unknown";
-    const ipHash = hashIP(forwarded);
-    const rate = checkRateLimit(ipHash);
+    const ipHash = hashIP(clientAddress(request));
+    const supabase = createServerSupabase();
+    if (!supabase && !venomAIConfig.mockMode) return json({ error: "A SNAKE está se reconectando. Tente novamente em instantes.", code: "SERVICE_UNAVAILABLE" }, 503);
+    let rate;
+    try {
+      rate = supabase
+        ? await consumeDistributedRateLimit(supabase, {
+            keyHash: ipHash,
+            scope: "venom-ai",
+            limit: safeNumber(venomAIConfig.rateLimitRequests, 6, 1, 30),
+            windowSeconds: Math.ceil(safeNumber(venomAIConfig.rateLimitWindowMs, 60_000, 10_000, 86_400_000) / 1000),
+          })
+        : checkRateLimit(ipHash);
+    } catch {
+      return json({ error: "A proteção da SNAKE está indisponível. Tente novamente em instantes.", code: "RATE_LIMIT_UNAVAILABLE" }, 503);
+    }
     if (!rate.allowed) return json({ error: "Muitas mensagens em sequência. Respire um pouco e tente novamente.", code: "RATE_LIMITED", retryAfter: rate.retryAfter }, 429, { "Retry-After": String(rate.retryAfter) });
     if (!acquireSession(sessionId)) return json({ error: "Já estou processando sua mensagem anterior.", code: "DUPLICATE_REQUEST" }, 409);
     lockedSession = sessionId;
-
-    const supabase = createServerSupabase();
-    if (!supabase && !venomAIConfig.mockMode) return json({ error: "A SNAKE está se reconectando. Tente novamente em instantes.", code: "SERVICE_UNAVAILABLE" }, 503);
 
     let history: StoredMessage[] = [];
     let messageCount = 0;
