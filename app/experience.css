@@ -38,6 +38,11 @@
 .editorial-break h2 span { color:#697562; }
 .editorial-break p:last-child { font-family:var(--font-mono); font-size:11px; letter-spacing:1px; line-height:1.8; }
 .service-dialog { width:min(1160px,calc(100% - 32px)); max-height:calc(100svh - 40px); padding:0; border:1px solid #718c54; background:#0b110a; color:#f1f4ef; overscroll-behavior:contain; }
+.service-dialog { scrollbar-width:thin; scrollbar-color:var(--lime) #071006; }
+.service-dialog::-webkit-scrollbar { width:8px; }
+.service-dialog::-webkit-scrollbar-track { background:#071006; border-left:1px solid #25331f; }
+.service-dialog::-webkit-scrollbar-thumb { background:linear-gradient(var(--lime),#6fae00); border:2px solid #071006; }
+.service-dialog::-webkit-scrollbar-thumb:hover { background:#d0ff65; }
 .service-dialog::backdrop { background:#000c; backdrop-filter:blur(6px); }
 .service-dialog[open] { animation:panel-enter .24s ease-out; }
 .service-dialog-body { padding:50px; }
