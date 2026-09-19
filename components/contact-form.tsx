@@ -43,7 +43,7 @@ export function ContactForm() {
     <Field label="O que você precisa?" htmlFor="contact-interest"><select className="vc-field-control" id="contact-interest" name="interest" required value={interest} onChange={e=>setInterest(e.target.value)}><option value="" disabled>Selecione uma opção</option>{["Site ou landing page","E-commerce","Sistema sob medida","Automação e IA","Branding e identidade","Performance e crescimento","Ainda não tenho certeza"].map(i=><option key={i}>{i}</option>)}</select></Field>
     <Field label="Conte um pouco sobre o desafio" htmlFor="contact-message"><textarea className="vc-field-control" id="contact-message" name="message" required maxLength={4000} rows={4} value={draft} onChange={e=>setDraft(e.target.value)} placeholder="Contexto, objetivo e momento atual..." /></Field>
     <input className="honeypot" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-    <Button variant="primary" loading={state==="sending"}>{state==="sending"?"Enviando...":<>Enviar mensagem <ArrowRight size={18}/></>}</Button>
+    <Button type="submit" variant="primary" loading={state==="sending"}>{state==="sending"?"Enviando...":<>Enviar mensagem <ArrowRight size={18}/></>}</Button>
     {state==="error"&&<p className="form-error" role="alert">{error}</p>}
     <small>Usaremos estes dados para conversar sobre seu projeto.</small>
   </form>;

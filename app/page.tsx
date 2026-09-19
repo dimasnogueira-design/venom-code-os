@@ -7,20 +7,18 @@ import { MobileMenu } from "@/components/mobile-menu";
 import { SnakeAI } from "@/components/snake-ai";
 import { ServiceExplorer } from "@/components/service-explorer";
 import { ProcessExperience } from "@/components/process-experience";
-import { venomCodeCase, websiteService } from "@/lib/content/sample-records";
+import { services, venomCodeCase } from "@/lib/content/records";
 import "./hero.css";
 import "./experience.css";
 
 export const metadata: Metadata = { alternates: { canonical: "/" }, robots: { index: true, follow: true } };
 
-const capabilities = [
-  {icon:Globe2,title:websiteService.title,text:websiteService.description},
-  {icon:ShoppingCart,title:"E-commerce",text:"Jornadas de compra"},
-  {icon:Braces,title:"Sistemas",text:"Operação sob controle"},
-  {icon:Bot,title:"IA & Automação",text:"Inteligência aplicada"},
-  {icon:Palette,title:"Branding",text:"Identidade que conecta"},
-  {icon:Gauge,title:"Performance",text:"Evolução mensurável"},
-];
+const capabilityIcons: Record<string, typeof Globe2> = { websites: Globe2, ecommerce: ShoppingCart, systems: Braces, "ai-automation": Bot, branding: Palette, performance: Gauge };
+const capabilityOrder = ["websites", "ecommerce", "systems", "ai-automation", "branding", "performance"];
+const capabilities = capabilityOrder.map(slug => {
+  const service = services.find(item => item.slug === slug)!;
+  return { icon: capabilityIcons[service.slug], title: service.title, text: service.capabilityDescription };
+});
 
 export default function Home() {
   return <main className="venom-home">

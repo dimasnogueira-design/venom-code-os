@@ -1,0 +1,55 @@
+import type { CaseRecord, ServiceRecord } from "./models";
+
+export const services = [
+  {
+    type: "service", id: "service-websites", slug: "websites", number: "01", title: "Websites", description: "Da página de campanha a um site com conteúdo, atendimento e integrações. O formato acompanha o objetivo do negócio.", capabilityDescription: "Presença que converte", status: "live", provenance: "current", relatedServices: ["branding", "performance"],
+    media: [{ src: "/images/service-websites.webp", alt: "Interface de website em notebook e telefone", kind: "image", width: 1536, height: 1024 }], cta: { label: "Explorar Websites", destination: "#servicos" },
+    line: "A primeira impressão.\nUma presença inteira.", interest: "Site ou landing page", intent: "Preciso de presença profissional", visual: ["Sua marca.", "Seu próximo nível."], integrations: ["Microsites", "Login", "Formulários inteligentes", "Banco de dados", "CRM", "Pagamentos", "E-mail", "Calendário", "Supabase", "APIs", "IA integrada"],
+    offers: [["Landing pages", "Campanhas, lançamentos e captação de contatos com uma mensagem e um próximo passo claros."], ["Sites institucionais e portfólios", "Serviços, diferenciais, conteúdo e trabalhos organizados para empresas, profissionais e criadores."], ["Catálogos e conteúdo dinâmico", "Produtos, projetos ou publicações com estrutura de conteúdo atualizável."], ["Áreas restritas e integrações", "Login, formulários, agenda, CRM ou IA quando fizerem sentido. Acesso, dados e APIs são avaliados no escopo."]],
+    example: "Uma clínica pode começar com serviços, equipe e agendamento. Uma marca em lançamento pode precisar apenas de uma landing page bem resolvida.", scope: "Começamos pelo objetivo, conteúdo disponível e ação esperada do visitante. Recursos com login ou dados pessoais exigem definição de permissões e segurança.",
+  },
+  {
+    type: "service", id: "service-ai-automation", slug: "ai-automation", number: "04", title: "IA & Automação", description: "Conecte as etapas que hoje dependem de copiar, colar e responder tudo manualmente. IA onde ela ajuda, regras claras onde elas bastam.", capabilityDescription: "Inteligência aplicada", status: "live", provenance: "current", relatedServices: ["systems", "performance"],
+    media: [{ src: "/images/service-ai.webp", alt: "Visual conceitual de inteligência artificial e automação", kind: "image" }], cta: { label: "Explorar IA & Automação", destination: "#servicos" },
+    line: "Menos repetição.\nMais inteligência.", interest: "Automação e IA", intent: "Quero automatizar minha operação", visual: ["Entrada", "Entendimento", "Ação"], integrations: ["Atendimento inteligente", "Qualificação de leads", "Briefing", "Recomendação", "FAQ inteligente", "Resumo e classificação", "Integração entre sistemas", "Propostas iniciais"],
+    offers: [["Atendimento e FAQ inteligente", "Assistentes baseados no conteúdo do negócio, com limites claros e encaminhamento para uma pessoa."], ["Qualificação e briefing", "Organização das informações de um pedido, perguntas relevantes e resumo para o time comercial."], ["Fluxos entre ferramentas", "Formulário → CRM → e-mail → responsável. Integrações dependem das APIs e permissões disponíveis."], ["Classificação e resumos", "Triagem de solicitações e síntese de dados ou documentos, com revisão humana quando necessária."]],
+    example: "Um pedido chega pelo site, é organizado por assunto e segue para a pessoa certa com o contexto que ela precisa para responder.", scope: "Validamos dados, volume, custo por uso e tratamento de erros. Decisões sensíveis e compromissos comerciais permanecem com a equipe.",
+  },
+  {
+    type: "service", id: "service-ecommerce", slug: "ecommerce", number: "02", title: "E-commerce", description: "Uma jornada de compra que combina apresentação, confiança e operação. A plataforma é escolhida depois de entender o catálogo e o modelo de venda.", capabilityDescription: "Jornadas de compra", status: "live", provenance: "current", relatedServices: ["websites", "performance"],
+    media: [{ src: "/images/service-commerce.webp", alt: "Visual conceitual de uma experiência de comércio digital", kind: "image" }], cta: { label: "Explorar E-commerce", destination: "#servicos" },
+    line: "Da descoberta\nao pedido.", interest: "E-commerce", intent: "Quero vender online", visual: ["Catálogo", "Carrinho", "Checkout"], integrations: ["Shopify", "Pix e cartão", "B2B", "Sob encomenda", "Retirada", "Assinaturas", "Marketplaces", "Área do cliente", "Estoque e entrega"],
+    offers: [["Loja e catálogo digital", "Produtos, variações, categorias, busca e uma experiência adaptada ao celular."], ["Shopify e plataformas de loja", "Configuração e personalização de uma base existente quando isso reduz complexidade."], ["B2B e pedidos sob consulta", "Catálogos comerciais, solicitação de orçamento e fluxos para representantes ou revendedores."], ["Pagamentos, estoque e entrega", "Integrações com provedores compatíveis. Marketplace, assinatura e repasses pedem análise específica."]],
+    example: "Uma loja pode vender itens de pronta entrega no checkout e receber pedidos sob medida por orçamento, sem misturar as duas jornadas.", scope: "Precisamos conhecer catálogo, estoque, logística e meios de pagamento. Não prometemos integração antes de verificar a plataforma.",
+  },
+  {
+    type: "service", id: "service-systems", slug: "systems", number: "03", title: "Sistemas", description: "Ferramentas construídas em torno do trabalho real: quem usa, o que precisa fazer e quais informações precisa acessar.", capabilityDescription: "Operação sob controle", status: "live", provenance: "current", relatedServices: ["ai-automation", "performance"],
+    media: [{ src: "/images/service-systems.webp", alt: "Visual conceitual de sistemas, painéis e operações digitais", kind: "image" }], cta: { label: "Explorar Sistemas", destination: "#servicos" },
+    line: "Sua operação.\nDo seu jeito.", interest: "Sistema sob medida", intent: "Tenho uma ideia de sistema", visual: ["Pessoas", "Processos", "Visibilidade"], integrations: ["Sistemas internos", "Dashboards", "Portais", "Painéis", "Plataformas", "Autenticação", "Banco de dados", "APIs", "Workflows"],
+    offers: [["Painéis e ferramentas internas", "Cadastros, tarefas, acompanhamento e visualização das informações relevantes para a equipe."], ["Portais e áreas de clientes", "Acesso a conteúdos, solicitações e histórico com perfis e permissões definidos."], ["MVP de produto digital", "Uma primeira versão com o fluxo principal para testar uso real antes de ampliar o produto."], ["APIs e integrações", "Conexão com serviços existentes após avaliar documentação, limites e manutenção."]],
+    example: "Uma empresa de serviços pode centralizar solicitações, responsáveis e andamento em um painel, em vez de procurar tudo em conversas soltas.", scope: "SaaS, múltiplas empresas, alta escala e setores regulados precisam de validação técnica. Definimos a menor primeira entrega útil.",
+  },
+  {
+    type: "service", id: "service-branding", slug: "branding", number: "05", title: "Branding", description: "Estratégia e expressão visual trabalhando juntas. A identidade precisa fazer sentido na apresentação, no produto e no contato com o cliente.", capabilityDescription: "Identidade que conecta", status: "live", provenance: "current", relatedServices: ["websites", "performance"],
+    media: [{ src: "/images/service-branding.webp", alt: "Visual conceitual de branding e identidade visual", kind: "image" }], cta: { label: "Explorar Branding", destination: "#servicos" },
+    line: "Uma marca\nque ocupa espaço.", interest: "Branding e identidade", intent: "Minha marca precisa evoluir", visual: ["Identidade", "Expressão", "Presença"], integrations: ["Estratégia", "Identidade visual", "Posicionamento", "Linguagem", "Digital brand system", "Direção de arte"],
+    offers: [["Posicionamento e mensagem", "Público, proposta de valor e linguagem para explicar com clareza por que a marca existe."], ["Identidade visual", "Símbolo, tipografia, cores e princípios de composição para aplicações consistentes."], ["Direção de arte digital", "Imagem, interface e peças de lançamento com uma linguagem reconhecível."], ["Aplicação e orientações", "Organização dos ativos e orientações de uso para manter consistência nas próximas entregas."]],
+    example: "A mesma identidade conecta o site, uma apresentação comercial e o material de lançamento sem parecer três marcas diferentes.", scope: "O escopo depende do estágio da marca e dos materiais existentes. Pesquisa jurídica e registro de marca são serviços especializados externos.",
+  },
+  {
+    type: "service", id: "service-performance", slug: "performance", number: "06", title: "Performance", description: "Uma presença digital precisa continuar melhorando depois da publicação. Primeiro, enxergar os gargalos; depois, priorizar o que mudar.", capabilityDescription: "Evolução mensurável", status: "live", provenance: "current", relatedServices: ["websites", "ecommerce"],
+    media: [{ src: "/images/service-performance.webp", alt: "Visual conceitual de performance e crescimento digital", kind: "image" }], cta: { label: "Explorar Performance", destination: "#servicos" },
+    line: "Medir. Aprender.\nEvoluir.", interest: "Performance e crescimento", intent: "Quero melhorar um site que já existe", visual: ["Observar", "Priorizar", "Testar"], integrations: ["Analytics", "Conversão", "Experimentos", "SEO técnico", "Core Web Vitals", "Acessibilidade", "Evolução contínua"],
+    offers: [["Diagnóstico de experiência", "Leitura das jornadas, formulários e pontos de abandono para encontrar atritos concretos."], ["Velocidade e acessibilidade", "Revisão de carregamento, experiência mobile e barreiras de uso."], ["Medição de conversão", "Definição de eventos e indicadores ligados ao objetivo, respeitando consentimento e privacidade."], ["Evolução contínua", "Hipóteses, melhorias priorizadas e comparação com os resultados observados."]],
+    example: "Antes de comprar mais tráfego, podemos investigar se o formulário funciona no celular e se o visitante entende o próximo passo.", scope: "Métricas dependem de acesso e dados disponíveis. Não prometemos faturamento ou posição em busca; trabalhamos com hipóteses verificáveis.",
+  },
+] satisfies ServiceRecord[];
+
+export const websiteService = services[0];
+
+export const venomCodeCase = {
+  type: "case", id: "case-venom-code", slug: "venom-code", title: "VENOM CODE", client: "VENOM CODE", year: "2026",
+  description: "A identidade, a experiência e a tecnologia se encontram neste site. Um projeto real, publicado e em evolução.", status: "live", provenance: "current", relatedServices: ["websites", "branding", "ai-automation"],
+  media: [{ src: "/images/we-do-for-us-first.webp", alt: "Estúdio VENOM CODE em operação com ambiente de desenvolvimento e direção visual da marca", kind: "image", width: 1600, height: 901 }],
+  cta: { label: "Ver projeto", destination: "#cases" },
+} satisfies CaseRecord;

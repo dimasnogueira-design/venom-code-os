@@ -7,7 +7,8 @@ app/venom-core.css concentra a fundação mínima:
 - colors e aliases legados;
 - surfaces e borders;
 - spacing;
-- typography;
+- typography: Display, H1, H2, H3, Body Large, Body, Caption, Technical Label
+  e Microcopy;
 - grid e catálogo de breakpoints;
 - radii e shadows;
 - z-index;
@@ -21,10 +22,13 @@ properties não podem ser usados diretamente em media queries.
 
 ## Componentes base
 
-- Button: variants primary, secondary, ghost e action; disabled/loading.
-- IconButton: accessible name e alvo mínimo de 44px.
+- Button: variants primary, secondary, ghost e action; disabled/loading; default
+  seguro type="button".
+- IconButton: accessible name, alvo mínimo de 44px e default seguro
+  type="button".
 - VenomClose: especialização global de IconButton.
-- Field: label, mensagem, invalid e associação por htmlFor.
+- Field: label, mensagem, invalid, associação por htmlFor, aria-describedby e
+  aria-invalid.
 
 ## Amostra migrada
 
@@ -33,7 +37,7 @@ properties não podem ser usados diretamente em media queries.
 - todos os campos do formulário de contato;
 - close do detalhe de serviço;
 - close da SNAKE;
-- registro Websites na capability rail;
+- seis serviços na capability rail e no explorador detalhado;
 - mídia e descrição do case VENOM CODE.
 
 A migração usa as classes antigas junto das classes Core. Isso preserva a
@@ -51,8 +55,20 @@ lib/content/models.ts define ServiceRecord e CaseRecord com:
 - CTA com destination opcional;
 - client/year para cases.
 
-lib/content/sample-records.ts contém somente uma amostra de service e uma de
-case. /work não foi criado.
+lib/content/records.ts é a fonte tipada única para os seis serviços atuais e o
+case VENOM CODE. A ordem visual continua explícita nos consumidores para
+preservar a experiência existente. /work não foi criado.
+
+## Validação nesta fase
+
+- lint e build validam sintaxe, tipos e integração;
+- scripts/gate1-core-check.mjs é somente um smoke estrutural por presença de
+  contratos essenciais no código-fonte; ele não simula comportamento no
+  navegador e não substitui testes de interação ou acessibilidade;
+- scripts/gate1-content-check.mjs executa a fonte tipada e valida quantidade,
+  IDs, slugs, relações, status, provenance, mídia/alt e destino de CTA;
+- as interações mínimas tocadas são verificadas manualmente no navegador sem
+  criar uma suíte pesada nesta fase.
 
 ## Legado preservado
 
@@ -67,6 +83,5 @@ case. /work não foi criado.
 
 1. Migrar componentes por área e remover literal somente após comparação.
 2. Consolidar ButtonLink quando os links de CTA forem tocados.
-3. Levar todos os services/cases para a fonte estruturada após revisão
-   editorial.
+3. Levar novos services/cases para a mesma fonte após revisão editorial.
 4. Remover aliases legados apenas ao final da migração.

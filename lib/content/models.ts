@@ -28,6 +28,16 @@ type ContentRecord = {
 
 export type ServiceRecord = ContentRecord & {
   type: "service";
+  number: string;
+  capabilityDescription: string;
+  line: string;
+  interest: string;
+  intent: string;
+  visual: string[];
+  integrations: string[];
+  offers: Array<readonly [title: string, description: string]>;
+  example: string;
+  scope: string;
 };
 
 export type CaseRecord = ContentRecord & {
