@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { Button } from "@/components/ui/button";
 
 export function HeroVideo({ header, children }: { header: ReactNode; children: ReactNode }) {
   const [phase, setPhase] = useState<"static" | "welcome" | "intro" | "boot" | "ready">("static");
@@ -108,7 +109,7 @@ export function HeroVideo({ header, children }: { header: ReactNode; children: R
         <p className="eyebrow">VENOM CODE</p>
         <h2>Presença que<br /><em>você sente.</em></h2>
         <p>Uma abertura de 10 segundos. Com som.</p>
-        <button className="button primary" onClick={start}><span aria-hidden="true">▶</span> Começar experiência</button>
+        <Button variant="primary" onClick={start}><span aria-hidden="true">▶</span> Começar experiência</Button>
         <button className="intro-enter" onClick={() => finish(true, true)}>Entrar sem intro <span aria-hidden="true">↗</span></button>
       </div>}
       {intro && <div className="intro-controls">

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test:gate0": "node scripts/gate0-api-smoke.mjs"
+    "test:gate0": "node scripts/gate0-api-smoke.mjs",
+    "test:gate1-core": "node scripts/gate1-core-check.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.57.4",

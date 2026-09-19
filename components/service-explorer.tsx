@@ -1,8 +1,9 @@
 "use client";
 
-import { ArrowRight, Bot, Braces, Globe2, Palette, ShoppingCart, TrendingUp, X } from "lucide-react";
+import { ArrowRight, Bot, Braces, Globe2, Palette, ShoppingCart, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { VenomClose } from "@/components/ui/venom-close";
 
 const services = [
   { id:"web", icon:Globe2, image:"/images/service-websites.webp", number:"01", title:"Websites", line:"A primeira impressão.\nUma presença inteira.", intro:"Da página de campanha a um site com conteúdo, atendimento e integrações. O formato acompanha o objetivo do negócio.", interest:"Site ou landing page", intent:"Preciso de presença profissional", visual:["Sua marca.","Seu próximo nível."], integrations:["Microsites","Login","Formulários inteligentes","Banco de dados","CRM","Pagamentos","E-mail","Calendário","Supabase","APIs","IA integrada"], offers:[
@@ -73,7 +74,7 @@ export function ServiceExplorer() {
     <section className="solution-routing shell section-pad" aria-labelledby="solution-title"><div><p className="section-kicker">02 / O QUE VOCÊ PRECISA CONSTRUIR?</p><h2 id="solution-title">Comece pelo problema.<br /><em>A solução vem depois.</em></h2><p>Você não precisa saber qual tecnologia precisa. Conte o problema. A gente desenha a solução.</p></div><div className="solution-list">{routes.map(([label,id])=><button key={id} onClick={()=>open(services.findIndex(service=>service.id===id))} aria-haspopup="dialog"><span>{label}</span><ArrowRight size={18}/></button>)}</div></section>
     <dialog ref={dialog} className="service-dialog" aria-labelledby="service-dialog-title" onClick={e=>{if(e.target===e.currentTarget)dialog.current?.close();}}>
       <div className="service-dialog-body">
-        <button className="service-dialog-close" onClick={()=>dialog.current?.close()} aria-label="Fechar detalhes do serviço"><X size={22}/></button>
+        <VenomClose className="service-dialog-close" onClick={()=>dialog.current?.close()} label="Fechar detalhes do serviço" />
         <div className="service-dialog-hero">
           <div><p className="section-kicker">VENOM CODE / {service.number}</p><h2 id="service-dialog-title">{service.title}</h2><p className="service-dialog-intro">{service.intro}</p></div>
           <figure><Image src={service.image} alt="" fill sizes="(max-width: 700px) 100vw, 48vw" priority /><figcaption>VISUAL CONCEITUAL / {service.title.toUpperCase()}</figcaption></figure>

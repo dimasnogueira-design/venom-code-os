@@ -1,8 +1,9 @@
 "use client";
 
-import { AudioLines, Bot, X, ArrowRight, Mic, Square, Sparkles, Send, RotateCcw } from "lucide-react";
+import { AudioLines, Bot, ArrowRight, Mic, Square, Sparkles, Send, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
+import { VenomClose } from "@/components/ui/venom-close";
 
 type VoiceEvent = { results: ArrayLike<ArrayLike<{ transcript: string }>> };
 type VoiceRecognition = { lang:string; continuous:boolean; interimResults:boolean; start:()=>void; stop:()=>void; onresult:((event:VoiceEvent)=>void)|null; onerror:(()=>void)|null; onend:(()=>void)|null };
@@ -69,7 +70,7 @@ export function SnakeAI({ label = "SNAKE AI", floating = false }: { label?: stri
     </button>
     <dialog ref={dialog} className="snake-dialog snake-chat-dialog" aria-labelledby={titleId} aria-describedby={descriptionId} onClick={event=>{if(event.target===event.currentTarget)dialog.current?.close();}}>
       <div className="snake-dialog-content">
-        <button className="snake-close" aria-label="Fechar SNAKE AI" onClick={()=>dialog.current?.close()}><X size={22}/></button>
+        <VenomClose className="snake-close" label="Fechar SNAKE AI" onClick={()=>dialog.current?.close()} />
         <header className="snake-dialog-head"><span className="snake-symbol" aria-hidden="true"><Image src="/images/snake-assistant.webp" alt="" width={72} height={72}/></span><div><p className="eyebrow">SNAKE // VENOM AI</p><span className="snake-dialog-status"><i/> {state==="offline"?"CONEXÃO INDISPONÍVEL":state==="typing"?"PROCESSANDO CONTEXTO":"ONLINE · CONSULTORIA DIGITAL"}</span></div></header>
         <h2 id={titleId}>Vamos transformar sua ideia em direção.</h2>
         <p id={descriptionId} className="snake-intro">Converse sobre o problema, o negócio ou o produto. Uma pergunta por vez, sem termos vazios.</p>

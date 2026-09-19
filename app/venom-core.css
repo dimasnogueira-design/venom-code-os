@@ -1,0 +1,76 @@
+:root {
+  --color-venom: #b8ff19;
+  --color-venom-deep: #7bd600;
+  --color-ink: #050606;
+  --color-surface-1: #0b0d0c;
+  --color-text: #f1f4ef;
+  --color-text-muted: #979d99;
+  --color-border: rgba(255, 255, 255, .12);
+  --color-error: #ff8f8f;
+  --lime: var(--color-venom);
+  --lime2: var(--color-venom-deep);
+  --ink: var(--color-ink);
+  --panel: var(--color-surface-1);
+  --white: var(--color-text);
+  --muted: var(--color-text-muted);
+  --line: var(--color-border);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-section: 120px;
+  --font-sans: var(--font-geist), Arial, sans-serif;
+  --font-technical: var(--font-mono), monospace;
+  --text-body: 1rem;
+  --text-caption: .75rem;
+  --text-technical: .6875rem;
+  --grid-max: 1180px;
+  --grid-gutter: 24px;
+  --grid-columns: 12;
+  --breakpoint-mobile: 600px;
+  --breakpoint-tablet: 900px;
+  --breakpoint-wide: 1600px;
+  --radius-none: 0;
+  --radius-small: 4px;
+  --radius-medium: 12px;
+  --border-subtle: 1px solid var(--color-border);
+  --shadow-focus: 0 0 0 3px rgba(184, 255, 25, .3);
+  --shadow-elevated: 0 22px 55px rgba(0, 0, 0, .47);
+  --z-content: 1;
+  --z-header: 20;
+  --z-overlay: 100;
+  --z-dialog: 120;
+  --motion-instant: 100ms;
+  --motion-fast: 200ms;
+  --motion-standard: 300ms;
+  --motion-reveal: 600ms;
+  --motion-cinematic: 900ms;
+  --ease-enter: cubic-bezier(.2, .7, .2, 1);
+  --ease-exit: cubic-bezier(.4, 0, 1, 1);
+  --ease-response: cubic-bezier(.2, 0, .2, 1);
+}
+
+:where(.vc-button, .vc-icon-button, .vc-field-control):focus-visible {
+  outline: 2px solid var(--color-venom);
+  outline-offset: 3px;
+  box-shadow: var(--shadow-focus);
+}
+
+.vc-button:disabled, .vc-icon-button:disabled, .vc-field-control:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+.vc-icon-button { display:inline-grid; place-items:center; min-width:44px; min-height:44px; }
+.vc-field { display:grid; gap:var(--space-2); }
+.vc-field-message { color:var(--color-text-muted); font-size:var(--text-caption); line-height:1.4; }
+.vc-field[data-invalid="true"] .vc-field-control { border-color:var(--color-error); }
+.vc-field[data-invalid="true"] .vc-field-message { color:var(--color-error); }
+
+@media (prefers-reduced-motion: reduce) {
+  .vc-button, .vc-icon-button, .vc-field-control { transition-duration:.01ms !important; }
+}
