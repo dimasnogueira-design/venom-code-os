@@ -23,8 +23,8 @@
   --space-7: 48px;
   --space-8: 64px;
   --space-section: 120px;
-  --font-sans: var(--font-geist), Arial, sans-serif;
-  --font-technical: var(--font-mono), monospace;
+  --font-sans: var(--font-geist, Arial), Arial, sans-serif;
+  --font-technical: var(--font-mono, "Courier New"), "Courier New", monospace;
   --text-display: clamp(4rem, 9vw, 9rem);
   --text-h1: clamp(3rem, 7vw, 7rem);
   --text-h2: clamp(2.25rem, 5vw, 5rem);
