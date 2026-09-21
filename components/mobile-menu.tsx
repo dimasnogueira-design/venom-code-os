@@ -9,21 +9,43 @@ const links = [["#servicos", "Serviços"], ["#cases", "Cases"], ["#processo", "P
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
-  const surface = useRef<HTMLDivElement>(null);
+  const surface = useRef<HTMLDialogElement>(null);
+  const restoreFocus = useRef(true);
   const menuId = useId();
-  const close = useCallback(() => setOpen(false), []);
+  const menuTitleId = useId();
+
+  const close = useCallback((restore = true) => {
+    restoreFocus.current = restore;
+    surface.current?.close();
+    setOpen(false);
+  }, []);
+
+  const navigate = useCallback((href: string) => {
+    close(false);
+    const target = document.querySelector<HTMLElement>(href);
+    if (!target) return;
+    const hadTabIndex = target.hasAttribute("tabindex");
+    if (!hadTabIndex) target.tabIndex = -1;
+    requestAnimationFrame(() => {
+      target.focus({ preventScroll: true });
+      if (!hadTabIndex) target.addEventListener("blur", () => target.removeAttribute("tabindex"), { once: true });
+    });
+  }, [close]);
 
   useEffect(() => {
     if (!open) return;
-    const triggerNode = trigger.current;
+    const dialog = surface.current;
+    if (!dialog) return;
     const previousOverflow = document.body.style.overflow;
+    const previousRootOverflow = document.documentElement.style.overflow;
+    if (!dialog.open) dialog.showModal();
     document.body.style.overflow = "hidden";
-    const focusable = () => Array.from(surface.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') ?? []);
-    requestAnimationFrame(() => focusable()[0]?.focus());
+    document.documentElement.style.overflow = "hidden";
+    requestAnimationFrame(() => dialog.querySelector<HTMLAnchorElement>("a[href]")?.focus());
     const keydown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") { event.preventDefault(); close(); return; }
+      if (event.key === "Escape") { event.preventDefault(); close(true); return; }
       if (event.key !== "Tab") return;
-      const items = focusable();
+      const items = Array.from(dialog.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'));
       if (!items.length) return;
       const first = items[0];
       const last = items[items.length - 1];
@@ -33,21 +55,22 @@ export function MobileMenu() {
     document.addEventListener("keydown", keydown);
     return () => {
       document.body.style.overflow = previousOverflow;
+      document.documentElement.style.overflow = previousRootOverflow;
       document.removeEventListener("keydown", keydown);
-      requestAnimationFrame(() => triggerNode?.focus({ preventScroll: true }));
     };
   }, [close, open]);
 
   return <div className="mobile-menu">
-    <IconButton ref={trigger} className="mobile-menu-trigger" onClick={() => setOpen(value => !value)} aria-expanded={open} aria-controls={menuId} label={open ? "Fechar menu" : "Abrir menu"}>
-      {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+    <IconButton ref={trigger} className="mobile-menu-trigger" onClick={() => { restoreFocus.current = true; setOpen(true); }} aria-expanded={open} aria-controls={menuId} label="Abrir menu">
+      <Menu aria-hidden="true" />
     </IconButton>
-    {open && <div ref={surface} className="mobile-menu-surface" id={menuId} role="dialog" aria-modal="true" aria-label="Menu principal">
-      <p>VENOM CODE <span>{"// MENU"}</span></p>
+    <dialog ref={surface} className="mobile-menu-surface" id={menuId} aria-labelledby={menuTitleId} onCancel={event => { event.preventDefault(); close(true); }} onClose={() => { setOpen(false); if (restoreFocus.current) requestAnimationFrame(() => trigger.current?.focus({ preventScroll: true })); }}>
+      <IconButton className="mobile-menu-close" onClick={() => close(true)} label="Fechar menu"><X aria-hidden="true" /></IconButton>
+      <p id={menuTitleId}>VENOM CODE <span>{"// MENU"}</span></p>
       <nav aria-label="Navegação principal no celular">
-        {links.map(([href, label], index) => <a key={href} onClick={close} href={href}><i>{String(index + 1).padStart(2, "0")}</i><span>{label}</span></a>)}
+        {links.map(([href, label], index) => <a key={href} onClick={() => navigate(href)} href={href}><i>{String(index + 1).padStart(2, "0")}</i><span>{label}</span></a>)}
       </nav>
       <small>STRATEGY · DESIGN · CODE · AI</small>
-    </div>}
+    </dialog>
   </div>;
 }

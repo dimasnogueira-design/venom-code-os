@@ -100,7 +100,7 @@ export function HeroVideo({ header, children }: { header: ReactNode; children: R
       {welcome && <div className="intro-welcome shell">
         <p className="eyebrow">VENOM CODE</p>
         <h2>Presença que<br /><em>você sente.</em></h2>
-        <p>Uma abertura de 10 segundos. Com som.</p>
+        <p>Uma abertura cinematográfica. Com som.</p>
         <Button variant="primary" onClick={start}><span aria-hidden="true">▶</span> Começar experiência</Button>
         <button className="intro-enter" onClick={() => finish(true)}>Entrar sem intro <span aria-hidden="true">↗</span></button>
       </div>}
