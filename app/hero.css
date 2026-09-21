@@ -229,13 +229,15 @@ body:has(.snake-dialog[open]) { overflow:hidden; }
   .intro-sound { bottom:max(3%,env(safe-area-inset-bottom)); }
 }
 @media(max-width:600px) {
+  .mobile-menu-trigger { visibility:visible; opacity:1; color:#fff; background:#050606; border-color:rgba(184,255,25,.72); box-shadow:0 0 0 1px rgba(0,0,0,.65),0 0 18px rgba(184,255,25,.12); }
+  .mobile-menu-trigger svg { display:block; width:24px; height:24px; stroke:currentColor; }
   .hero-experience .hero { min-height:680px; }
   .hero-experience .hero-media { height:52%; }
   .hero-experience .hero-media video,.hero-experience .hero-poster { object-position:68% center; }
   .hero-experience .hero-shade { background:linear-gradient(0deg,#050606 0%,#050606 42%,rgba(5,6,6,.9) 51%,rgba(5,6,6,.08) 73%,transparent); }
   .hero-experience .hero-content { width:calc(100% - 32px); padding-bottom:max(28px,env(safe-area-inset-bottom)); }
   .hero-experience .hero h1 { font-size:clamp(38px,12vw,50px); margin:15px 0 18px; }
-  .hero-experience .hero-copy { max-width:34ch; line-height:1.55; }
+  .hero-experience .hero-copy { width:100%; max-width:100%; padding-right:2px; overflow-wrap:anywhere; line-height:1.55; }
   .hero-experience .hero-actions { display:grid; grid-template-columns:1fr; margin-top:20px; }
   .hero-experience .hero-actions > .button { width:100%; min-width:0; white-space:normal; }
   .intro-welcome { width:calc(100% - 32px); }
