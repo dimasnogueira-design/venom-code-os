@@ -17,7 +17,7 @@ const capabilityIcons: Record<string, typeof Globe2> = { websites: Globe2, ecomm
 const capabilityOrder = ["websites", "ecommerce", "systems", "ai-automation", "branding", "performance"];
 const capabilities = capabilityOrder.map(slug => {
   const service = services.find(item => item.slug === slug)!;
-  return { icon: capabilityIcons[service.slug], title: service.title, text: service.capabilityDescription };
+  return { icon: capabilityIcons[service.slug], slug: service.slug, number: service.number, title: service.title, text: service.capabilityDescription };
 });
 
 export default function Home() {
@@ -33,7 +33,7 @@ export default function Home() {
       <div className="hero-actions"><a className="button primary" href="#contato">Iniciar projeto <ArrowRight size={18}/></a><SnakeAI label="Falar com SNAKE AI"/></div>
     </HeroVideo>
 
-    <section className="capability-rail" aria-label="Capacidades da VENOM CODE"><div className="shell capability-grid">{capabilities.map(({icon:Icon,title,text})=><a href="#servicos" className="capability-item" key={title}><Icon size={22}/><div><strong>{title}</strong><span>{text}</span></div></a>)}</div></section>
+    <section className="capability-rail" aria-label="Capacidades da VENOM CODE"><div className="shell capability-grid">{capabilities.map(({icon:Icon,slug,number,title,text})=><a href={`#service-${slug}`} className="capability-item" key={title}><small>{number}</small><Icon size={22}/><div><strong>{title}</strong><span>{text}</span></div></a>)}</div></section>
     <section className="manifesto shell section-pad"><p className="section-kicker">ESTRATÉGIA. IDENTIDADE. TECNOLOGIA. EXECUÇÃO.</p><div className="manifesto-grid"><h2>Sua marca não precisa só existir.<br/><span>Precisa avançar.</span></h2><div><p>Somos um estúdio de tecnologia para negócios que precisam transformar visão em produto, operação e crescimento.</p><p>Você não precisa saber qual tecnologia precisa. Conte o problema. A gente desenha a solução.</p></div></div></section>
 
     <ServiceExplorer/>

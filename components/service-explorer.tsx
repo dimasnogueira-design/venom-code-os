@@ -33,7 +33,7 @@ export function ServiceExplorer() {
     <section className="experience-services section-pad" id="servicos">
       <div className="shell">
         <div className="section-head"><div><p className="section-kicker">01 / CAPACIDADES</p><h2>Escolha um caminho.<br /><span>Explore o que é possível.</span></h2></div><p>Cada negócio pede uma combinação diferente. Abra uma área para conhecer aplicações, possibilidades e o que precisamos avaliar.</p></div>
-        <div className="experience-grid">{serviceOrder.map(id=>services.findIndex(service=>service.slug===id)).map(i=>{const item=services[i]; const Icon=serviceIcons[item.slug]; return <button key={item.id} className={`experience-card experience-${serviceClassNames[item.slug]}`} onClick={()=>open(i)} aria-haspopup="dialog" aria-label={`Explorar ${item.title}`}>
+        <div className="experience-grid">{serviceOrder.map(id=>services.findIndex(service=>service.slug===id)).map(i=>{const item=services[i]; const Icon=serviceIcons[item.slug]; return <button id={`service-${item.slug}`} key={item.id} className={`experience-card experience-${serviceClassNames[item.slug]}`} onClick={()=>open(i)} aria-haspopup="dialog" aria-label={`Explorar ${item.title}`}>
           <span className="experience-card-art" aria-hidden="true"><Image src={item.media[0].src} alt="" fill sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 58vw" /></span>
           <span className="experience-card-top"><span>{item.number} / {item.title}</span><Icon size={22} aria-hidden="true" /></span>
           <span className="service-visual" aria-hidden="true">{item.visual.map((word,n)=><span key={word}><i>{String(n+1).padStart(2,"0")}</i>{word}</span>)}</span>
