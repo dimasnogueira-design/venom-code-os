@@ -65,15 +65,15 @@ export function SnakeAI({ label = "SNAKE AI", floating = false }: { label?: stri
   function continueBrief(){ const transcript=messages.filter(item=>item.role==="user").map(item=>item.content).join(" "); dialog.current?.close(); window.dispatchEvent(new CustomEvent("venom-brief",{detail:{interest:"Ainda não tenho certeza",message:`Briefing iniciado com a SNAKE: ${transcript}`}})); document.getElementById("contato")?.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"}); }
 
   return <>
-    <button className={floating?"snake-float":"button ghost"} aria-haspopup="dialog" aria-label={floating?"Falar com a SNAKE AI":undefined} onClick={()=>dialog.current?.showModal()}>
+    <button className={floating?"snake-float":"button ghost"} aria-haspopup="dialog" aria-label={floating?"Planejar meu projeto com a SNAKE, a consultora digital da VENOM":undefined} onClick={()=>dialog.current?.showModal()}>
       {floating?<><span className="snake-float-label">{label}</span><span className="snake-float-mark"><Image src="/images/snake-assistant.webp" alt="" width={72} height={72}/></span></>:<><Bot size={18} aria-hidden="true"/> {label}</>}
     </button>
     <dialog ref={dialog} className="snake-dialog snake-chat-dialog" aria-labelledby={titleId} aria-describedby={descriptionId} onClick={event=>{if(event.target===event.currentTarget)dialog.current?.close();}}>
       <div className="snake-dialog-content">
         <VenomClose className="snake-close" label="Fechar SNAKE AI" onClick={()=>dialog.current?.close()} />
         <header className="snake-dialog-head"><span className="snake-symbol" aria-hidden="true"><Image src="/images/snake-assistant.webp" alt="" width={72} height={72}/></span><div><p className="eyebrow">SNAKE // VENOM AI</p><span className="snake-dialog-status"><i/> {state==="offline"?"CONEXÃO INDISPONÍVEL":state==="typing"?"PROCESSANDO CONTEXTO":"ONLINE · CONSULTORIA DIGITAL"}</span></div></header>
-        <h2 id={titleId}>Vamos transformar sua ideia em direção.</h2>
-        <p id={descriptionId} className="snake-intro">Converse sobre o problema, o negócio ou o produto. Uma pergunta por vez, sem termos vazios.</p>
+        <h2 id={titleId}>Planeje seu projeto com a SNAKE.</h2>
+        <p id={descriptionId} className="snake-intro">A consultora digital da VENOM entende o problema, recomenda caminhos e monta um briefing para o time.</p>
         <div className="snake-conversation" aria-live="polite" aria-busy={state==="typing"}>
           {messages.map((item,index)=><div key={`${item.role}-${index}`} className={`snake-bubble ${item.role}`}><b>{item.role==="assistant"?"SNAKE":"VOCÊ"}</b><p>{item.content}</p></div>)}
           {state==="typing"&&<div className="snake-bubble assistant typing"><b>SNAKE</b><span/><span/><span/></div>}
@@ -83,7 +83,7 @@ export function SnakeAI({ label = "SNAKE AI", floating = false }: { label?: stri
         <form className="snake-composer" onSubmit={event=>{event.preventDefault();sendMessage();}}>
           <label className="sr-only" htmlFor={`${titleId}-input`}>Mensagem para a SNAKE</label>
           <textarea id={`${titleId}-input`} required minLength={2} maxLength={1800} rows={3} value={input} onChange={event=>setInput(event.target.value)} onKeyDown={event=>{if(event.key==="Enter"&&!event.shiftKey){event.preventDefault();sendMessage();}}} placeholder="Conte o que você quer construir…" disabled={state==="typing"}/>
-          <div className="snake-composer-actions"><button type="button" className={listening?"is-listening":""} onClick={toggleVoice} aria-label={listening?"Parar gravação":"Falar por áudio"}>{listening?<Square size={16}/>:<Mic size={18}/>}<span>{listening?"Parar":"Áudio"}</span></button><button type="submit" disabled={state==="typing"||input.trim().length<2} aria-label="Enviar mensagem"><Send size={18}/><span>Enviar</span></button></div>
+          <div className="snake-composer-actions"><button type="button" className={listening?"is-listening":""} onClick={toggleVoice} aria-label={listening?"Parar gravação":"Gravar áudio"}>{listening?<Square size={16}/>:<Mic size={18}/>}<span>{listening?"Parar gravação":"Gravar áudio"}</span></button><button type="submit" disabled={state==="typing"||input.trim().length<2} aria-label="Enviar mensagem"><Send size={18}/><span>Enviar</span></button></div>
         </form>
         <div className={`snake-feedback ${state}`} role="status"><AudioLines size={15}/><span>{statusMessage||(remaining!==undefined?`${remaining} mensagens disponíveis nesta conversa.`:"Sua conversa é usada apenas para preparar o projeto.")}</span></div>
         {messages.length>2&&<div className="snake-next"><button type="button" onClick={resetConversation}><RotateCcw size={15}/> Nova conversa</button><button type="button" onClick={continueBrief}>Levar contexto para o briefing <ArrowRight size={16}/></button></div>}
