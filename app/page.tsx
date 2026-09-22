@@ -23,7 +23,7 @@ const capabilities = capabilityOrder.map(slug => {
 export default function Home() {
   return <main className="venom-home">
     <HeroVideo header={<header className="site-header">
-      <a className="wordmark" href="#top" aria-label="VENOM CODE — início"><Image src="/images/snake-assistant.webp" alt="" width={30} height={30} priority/><span>VENOM</span><b>CODE</b></a>
+      <a className="wordmark" href="#top" aria-label="VENOM CODE — início"><span>VENOM</span><b>CODE</b></a>
       <nav className="desktop-nav" aria-label="Navegação principal"><a href="#servicos">Serviços</a><a href="#cases">Cases</a><a href="#processo">Processo</a><a href="#snake">SNAKE</a></nav>
       <a className="header-cta" href="#contato">Iniciar projeto <ArrowRight size={15}/></a><MobileMenu/>
     </header>}>
@@ -47,7 +47,7 @@ export default function Home() {
     <section className="snake-feature section-pad" id="snake"><div className="shell snake-feature-grid"><div><p className="section-kicker">06 / SNAKE // VENOM AI</p><div className="snake-online"><i/> VENOM AI // ONLINE</div><h2>Planeje seu projeto<br/>com a <em>SNAKE.</em></h2><p>SNAKE é a consultora digital da VENOM. Ela entende o problema, recomenda caminhos e organiza um briefing para o nosso time.</p><SnakeAI label="Planejar meu projeto com IA"/></div><div className="snake-console"><div className="snake-console-head"><Bot size={22}/><span>SNAKE / CONSULTORA DIGITAL</span></div><div className="snake-chat" aria-label="Demonstração de conversa com a SNAKE"><p className="snake-message user">Quero vender online, mas ainda não sei qual plataforma usar.</p><p className="snake-message ai"><b>SNAKE</b> Primeiro vamos entender catálogo, operação e entrega. Depois escolhemos a tecnologia.</p></div><ol><li><span>01</span>Conte o objetivo do seu negócio.</li><li><span>02</span>Receba caminhos recomendados.</li><li><span>03</span>Leve um briefing claro ao time.</li></ol><p className="snake-state">CONVERSA PROTEGIDA · CONTEXTO LIMITADO · BRIEFING GUIADO</p></div></div></section>
 
     <section className="contact section-pad" id="contato"><div className="shell contact-grid"><div><p className="section-kicker">07 / PRÓXIMO MOVIMENTO</p><h2>Tem um problema real?<br/><em>Vamos atacar.</em></h2><p>Conte o momento do seu negócio. A gente responde com clareza sobre o melhor caminho — mesmo que ele não comece por código.</p><div className="contact-note"><Zap size={18}/><span>Resposta humana. Conversa direta. Sem apresentação genérica.</span></div></div><ContactForm/></div></section>
-    <footer><div className="shell footer-main"><a className="wordmark" href="#top"><Image src="/images/snake-assistant.webp" alt="" width={30} height={30}/><span>VENOM</span><b>CODE</b></a><p>Ideias. Código. Resultado.</p><div><a href="#servicos">Serviços</a><a href="#cases">Cases</a><a href="#contato">Contato</a></div></div><div className="shell footer-bottom"><span>© 2026 VENOM CODE</span><span>BUILD · EXECUTE · EVOLVE</span></div></footer>
+    <footer><div className="shell footer-main"><a className="wordmark" href="#top"><span>VENOM</span><b>CODE</b></a><p>Ideias. Código. Resultado.</p><div><a href="#servicos">Serviços</a><a href="#cases">Cases</a><a href="#contato">Contato</a></div></div><div className="shell footer-bottom"><span>© 2026 VENOM CODE</span><span>BUILD · EXECUTE · EVOLVE</span></div></footer>
     <SnakeAI label="Planejar projeto com IA" floating />
   </main>;
 }
