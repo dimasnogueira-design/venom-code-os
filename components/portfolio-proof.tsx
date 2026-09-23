@@ -16,9 +16,9 @@ export function PortfolioProof() {
         <div className="portfolio-lead-copy"><span>CASE VISUAL / FIBRAV</span><h3>Da comunicação técnica<br/>para uma presença digital clara.</h3><p>O material original orienta a linguagem. A aplicação web organiza produto, segmento e conversão em uma experiência responsiva.</p><div className="portfolio-tags"><i>IDENTIDADE PRESERVADA</i><i>CONCEITO DIGITAL</i><i>DESKTOP + MOBILE</i></div></div>
         <Link href="/work/fibrav" className="portfolio-web" aria-label="Abrir case completo da Fibrav"><Image src="/images/work/fibrav/desktop.webp" alt="Projeto completo da Fibrav com identidade, aplicações e experiência digital" width={1536} height={1024} sizes="(max-width: 900px) 100vw, 68vw"/><span>VER CASE COMPLETO ↗</span></Link>
         <div className="portfolio-evolution" aria-label="Evolução visual do projeto Fibrav">
-          <figure><Image src="/images/portfolio/fibrav-catalogo.jpg" alt="Material editorial original da Fibrav" width={1000} height={600}/><figcaption><b>01</b> MATERIAL ORIGINAL</figcaption></figure>
-          <figure><Image src="/images/portfolio/fibrav-alimentos.jpg" alt="Catálogo técnico de equipamentos alimentícios Fibrav" width={1000} height={600}/><figcaption><b>02</b> SISTEMA DE PRODUTOS</figcaption></figure>
-          <figure><Image src="/images/portfolio/fibrav-web-concept.png" alt="Aplicação digital conceitual da Fibrav" width={1680} height={945}/><figcaption><b>03</b> EXPERIÊNCIA DIGITAL</figcaption></figure>
+          <figure><Image src="/images/portfolio/fibrav-material-original.webp" alt="Material editorial original da Fibrav" width={1672} height={941}/><figcaption><b>01</b> MATERIAL ORIGINAL</figcaption></figure>
+          <figure><Image src="/images/portfolio/fibrav-product-system.webp" alt="Sistema de produtos Fibrav aplicado em configurador digital" width={1672} height={941}/><figcaption><b>02</b> SISTEMA DE PRODUTOS</figcaption></figure>
+          <figure><Image src="/images/portfolio/fibrav-digital-experience.webp" alt="Experiência digital responsiva da Fibrav" width={1672} height={941}/><figcaption><b>03</b> EXPERIÊNCIA DIGITAL</figcaption></figure>
         </div>
       </article>
 
