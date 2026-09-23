@@ -55,7 +55,8 @@
 .service-dialog::backdrop { background:#000c; backdrop-filter:blur(6px); }
 .service-dialog[open] { animation:panel-enter .24s ease-out; }
 .service-dialog-body { padding:50px; }
-.service-dialog-close { position:sticky; float:right; top:16px; margin-top:-26px; margin-right:-26px; border:1px solid #586e40; background:#10190c; color:white; width:44px; height:44px; display:grid; place-items:center; cursor:pointer; z-index:2; }
+.service-dialog-close { position:sticky; float:right; top:16px; margin-top:-24px; margin-right:-24px; border:1px solid #3d4e31; background:#0e160b; color:white; width:42px; height:42px; min-width:42px; min-height:42px; padding:0; display:grid; place-items:center; cursor:pointer; z-index:2; }
+.service-dialog-close svg { width:19px; height:19px; stroke-width:1.8; }
 .service-dialog-hero { display:grid; grid-template-columns:.82fr 1.18fr; align-items:center; gap:42px; margin-bottom:38px; }
 .service-dialog-hero figure { position:relative; aspect-ratio:16/9; margin:0; border:1px solid #536c3e; background:#050805; overflow:hidden; box-shadow:16px 18px 0 #050805; }
 .service-dialog-hero figure::after { content:""; position:absolute; inset:0; box-shadow:inset 0 0 70px #0005; pointer-events:none; }
