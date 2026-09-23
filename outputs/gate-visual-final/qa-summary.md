@@ -50,3 +50,30 @@ The 1440, 768, 390, desktop-SNAKE and mobile-SNAKE screenshots were captured and
 ## Release decision
 
 Do not promote to production until the official logo asset is supplied or the safe wordmark is explicitly accepted, and the real contact/SNAKE integrations plus microphone workflow are exercised in the target environment.
+
+## Integration environment audit — 2026-09-23
+
+Read-only inspection of the Vercel project environment configuration found:
+
+| Variable | Current scope |
+| --- | --- |
+| `SUPABASE_SERVICE_ROLE_KEY` | Production only |
+| `OPENAI_API_KEY` | Production only |
+| `SUPABASE_URL` | Production and Preview |
+| `VENOM_AI_MODE` | Production and Preview |
+| `VENOM_AI_MODEL` | Production and Preview |
+| `VENOM_AI_HASH_SECRET` | Production and Preview; Vercel flags it as secret-like configuration needing attention |
+
+There is no currently authorized Preview environment capable of exercising real SNAKE responses or writing a real contact lead. The APIs fail closed when the required server secret is unavailable: `/api/venom-ai` returns a service-unavailable state without Supabase unless mock mode is enabled, and `/api/leads` returns configuration unavailable without Supabase.
+
+The public Preview is also protected by Vercel Authentication for unauthenticated API clients; a direct non-writing API probe returned HTTP 401 before reaching the application route. No secret was revealed, created, copied, downloaded or granted to Preview during this audit.
+
+### Updated integration gate
+
+| Area | Status | Reason |
+| --- | --- | --- |
+| Real SNAKE response | BLOCKED | `OPENAI_API_KEY` and `SUPABASE_SERVICE_ROLE_KEY` are Production-only. |
+| Contact form persistence | BLOCKED | `SUPABASE_SERVICE_ROLE_KEY` is Production-only. |
+| Voice control presentation | PASS | Recording control and review-before-send copy are implemented and render correctly. |
+| Voice end-to-end | PARTIAL | A real microphone permission, spoken input, transcription review and send were not exercised. |
+| Production promotion | STOP | Integration gate remains open. |
