@@ -2,8 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { workCases } from "@/lib/content/work";
 
-const featuredSlugs = ["bikeid", "bravvos", "madeira-getuba", "ideccosolo", "liquid-vodka", "stay12"];
-const supportingWork = featuredSlugs.map(slug => workCases.find(item => item.slug === slug)!);
+const supportingWork = workCases.filter(item => item.slug !== "fibrav");
 
 export function PortfolioProof() {
   return <section className="portfolio-proof section-pad" id="portfolio" aria-labelledby="portfolio-title">
@@ -25,8 +24,9 @@ export function PortfolioProof() {
 
       <div className="portfolio-supporting">
         {supportingWork.map(item => <Link href={`/work/${item.slug}`} key={item.slug}><article><figure><Image src={`/images/work/${item.slug}/thumb.webp`} alt={item.alt} fill sizes="(max-width: 760px) 100vw, 33vw"/></figure><div><span>{item.category}</span><h3>{item.title}</h3><p>Explorar projeto ↗</p></div></article></Link>)}
+        <a className="portfolio-callout" href="#contato"><article><div><span>SEU PROJETO / PRÓXIMO CASE</span><h3>Vamos criar algo que ocupe espaço.</h3><p>Iniciar projeto ↗</p></div></article></a>
       </div>
-      <div className="portfolio-all"><p>24 projetos entre identidade, editorial, produto e presença digital.</p><Link href="/work">Ver portfólio completo <span aria-hidden="true">↗</span></Link></div>
+      <div className="portfolio-all"><p>24 projetos entre identidade, editorial, produto e presença digital.</p><Link href="/work">Explorar em tela cheia <span aria-hidden="true">↗</span></Link></div>
     </div>
   </section>;
 }
