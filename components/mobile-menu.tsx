@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { IconButton } from "@/components/ui/icon-button";
 
-const links = [["#servicos", "Serviços"], ["/work", "Cases"], ["#processo", "Processo"], ["#snake", "SNAKE"], ["#contato", "Iniciar projeto"]] as const;
+const links = [["#servicos", "Serviços"], ["#portfolio", "Portfólio"], ["#processo", "Processo"], ["#snake", "SNAKE"], ["#contato", "Iniciar projeto"]] as const;
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
