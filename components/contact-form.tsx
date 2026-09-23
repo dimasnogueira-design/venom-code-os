@@ -2,6 +2,7 @@
 
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
+import { track } from "@vercel/analytics";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 
@@ -31,7 +32,7 @@ export function ContactForm() {
     try {
       const response=await fetch("/api/leads",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...data,sessionId:localStorage.getItem("venom-snake-session")||undefined})});
       const result=await response.json().catch(()=>({}));
-      if(response.ok){setState("success");form.reset();setDraft("");setInterest("");setContext(false);return;}
+      if(response.ok){track("lead_submitted",{interest:String(data.interest||"not_selected"),snakeContext:Boolean(data.sessionId)});setState("success");form.reset();setDraft("");setInterest("");setContext(false);return;}
       setState("error");setError(result.error||"Não foi possível enviar agora. Tente novamente.");
     }catch{setState("error");setError("A conexão falhou. Seus dados continuam aqui; tente enviar novamente.");}
   }

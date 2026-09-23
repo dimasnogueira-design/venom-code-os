@@ -3,6 +3,7 @@
 import { AudioLines, Bot, ArrowRight, Mic, Square, Sparkles, Send, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
+import { track } from "@vercel/analytics";
 import { VenomClose } from "@/components/ui/venom-close";
 
 type VoiceEvent = { results: ArrayLike<ArrayLike<{ transcript: string }>> };
@@ -57,15 +58,16 @@ export function SnakeAI({ label = "SNAKE AI", floating = false }: { label?: stri
       if(!response.ok) { setState(data.code==="RATE_LIMITED"||data.code==="SESSION_LIMIT"?"limited":data.code?.includes("UNAVAILABLE")?"offline":"error"); setStatusMessage(data.error||"Não consegui responder agora."); return; }
       if(data.sessionId){setSessionId(data.sessionId);localStorage.setItem("venom-snake-session",data.sessionId);}
       if(data.reply)setMessages(current=>[...current,{role:"assistant",content:data.reply!}]);
+      track("snake_message_answered",{entry:floating?"floating":"inline",firstMessage:messages.length===1});
       setRemaining(data.remaining); setState("idle");
     } catch { setState("offline"); setStatusMessage("Conexão indisponível. Tente novamente em instantes."); }
   }
 
   function resetConversation(){ localStorage.removeItem("venom-snake-session"); setSessionId(""); setMessages([greeting]); setInput(""); setState("idle"); setStatusMessage(""); setRemaining(undefined); }
-  function continueBrief(){ const transcript=messages.filter(item=>item.role==="user").map(item=>item.content).join(" "); dialog.current?.close(); window.dispatchEvent(new CustomEvent("venom-brief",{detail:{interest:"Ainda não tenho certeza",message:`Briefing iniciado com a SNAKE: ${transcript}`}})); document.getElementById("contato")?.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"}); }
+  function continueBrief(){ const transcript=messages.filter(item=>item.role==="user").map(item=>item.content).join(" "); track("snake_briefing_started",{entry:floating?"floating":"inline"}); dialog.current?.close(); window.dispatchEvent(new CustomEvent("venom-brief",{detail:{interest:"Ainda não tenho certeza",message:`Briefing iniciado com a SNAKE: ${transcript}`}})); document.getElementById("contato")?.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"}); }
 
   return <>
-    <button className={floating?"snake-float":"button ghost"} aria-haspopup="dialog" aria-label={floating?"Planejar meu projeto com a SNAKE, a consultora digital da VENOM":undefined} onClick={()=>dialog.current?.showModal()}>
+    <button className={floating?"snake-float":"button ghost"} aria-haspopup="dialog" aria-label={floating?"Planejar meu projeto com a SNAKE, a consultora digital da VENOM":undefined} onClick={()=>{track("snake_opened",{entry:floating?"floating":"inline"});dialog.current?.showModal();}}>
       {floating?<><span className="snake-float-label">{label}</span><span className="snake-float-mark"><Image src="/images/snake-assistant.webp" alt="" width={72} height={72}/></span></>:<><Bot size={18} aria-hidden="true"/> {label}</>}
     </button>
     <dialog ref={dialog} className="snake-dialog snake-chat-dialog" aria-labelledby={titleId} aria-describedby={descriptionId} onClick={event=>{if(event.target===event.currentTarget)dialog.current?.close();}}>

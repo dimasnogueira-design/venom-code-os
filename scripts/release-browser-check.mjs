@@ -43,7 +43,7 @@ await sleep(120);
 result.serviceDialog = await evaluate(`(()=>{const d=document.querySelector('.service-dialog');const r=d?.getBoundingClientRect();return {open:d?.open,width:Math.round(r?.width||0),fits:(r?.right||0)<=innerWidth&&((r?.left||0)>=0),scrollbar:getComputedStyle(d).scrollbarColor}})()`);
 await evaluate(`document.querySelector('.service-dialog-close')?.click();document.querySelector('.snake-float')?.click()`);
 await sleep(120);
-result.snake = await evaluate(`(()=>{const d=document.querySelector('.snake-chat-dialog[open]');const r=d?.getBoundingClientRect();return {open:!!d?.open,fits:(r?.right||0)<=innerWidth&&((r?.left||0)>=0),audio:!!d?.querySelector('[aria-label="Falar por áudio"]'),composer:!!d?.querySelector('textarea')}})()`);
+result.snake = await evaluate(`(()=>{const d=document.querySelector('.snake-chat-dialog[open]');const r=d?.getBoundingClientRect();return {open:!!d?.open,fits:(r?.right||0)<=innerWidth&&((r?.left||0)>=0),audio:!!d?.querySelector('[aria-label="Gravar áudio"]'),composer:!!d?.querySelector('textarea')}})()`);
 await evaluate(`document.querySelector('.snake-close')?.click();document.querySelector('#contato')?.scrollIntoView()`);
 await sleep(100);
 result.form = await evaluate(`(()=>{const f=document.querySelector('.contact-form');return {fields:f?.querySelectorAll('input,select,textarea').length,submit:!!f?.querySelector('button[type="submit"]'),invalid:!f?.checkValidity(),overflow:document.documentElement.scrollWidth>innerWidth}})()`);

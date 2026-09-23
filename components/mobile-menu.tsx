@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { IconButton } from "@/components/ui/icon-button";
 
-const links = [["#servicos", "Serviços"], ["#cases", "Cases"], ["#processo", "Processo"], ["#snake", "SNAKE"], ["#contato", "Iniciar projeto"]] as const;
+const links = [["#servicos", "Serviços"], ["/work", "Cases"], ["#processo", "Processo"], ["#snake", "SNAKE"], ["#contato", "Iniciar projeto"]] as const;
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
@@ -22,6 +22,7 @@ export function MobileMenu() {
 
   const navigate = useCallback((href: string) => {
     close(false);
+    if (!href.startsWith("#")) return;
     const target = document.querySelector<HTMLElement>(href);
     if (!target) return;
     const hadTabIndex = target.hasAttribute("tabindex");
