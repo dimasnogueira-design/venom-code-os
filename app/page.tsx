@@ -30,8 +30,8 @@ export default function Home() {
     </header>}>
       <p className="eyebrow"><span/> Estratégia · Design · Tecnologia</p>
       <h1>Mais que código.<br/><em>Resultado.</em></h1>
-      <p className="hero-copy">Estratégia, identidade, tecnologia e inteligência artificial para transformar ideias em produtos digitais reais.</p>
-      <div className="hero-actions"><a className="button primary" href="#contato">Iniciar projeto <ArrowRight size={18}/></a><SnakeAI label="Planejar meu projeto com IA"/></div>
+      <p className="hero-copy">Estratégia, design, tecnologia e IA para transformar problemas reais em produtos que funcionam.</p>
+      <div className="hero-actions"><a className="button primary" href="#contato">INICIAR PROJETO <ArrowRight size={18}/></a><SnakeAI label="CONVERSAR COM A SNAKE" identityIcon/></div>
     </HeroVideo>
 
     <section className="capability-rail" aria-label="Capacidades da VENOM CODE"><div className="shell capability-grid">{capabilities.map(({icon:Icon,slug,number,title,text})=><a href={`#service-${slug}`} className="capability-item" key={title}><small>{number}</small><Icon size={22}/><div><strong>{title}</strong><span>{text}</span></div></a>)}</div></section>

@@ -15,7 +15,7 @@ type APIResponse = { sessionId?:string; reply?:string; error?:string; code?:stri
 const quickIdeas = ["Quero um site","Quero vender online","Quero automatizar algo","Tenho outra ideia"];
 const greeting:ChatMessage = { role:"assistant", content:"Me conta o que você quer construir. Pode explicar do seu jeito." };
 
-export function SnakeAI({ label = "SNAKE AI", floating = false }: { label?: string; floating?: boolean }) {
+export function SnakeAI({ label = "SNAKE AI", floating = false, identityIcon = false }: { label?: string; floating?: boolean; identityIcon?: boolean }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const conversation = useRef<HTMLDivElement>(null);
   const chatEnd = useRef<HTMLDivElement>(null);
@@ -82,7 +82,7 @@ export function SnakeAI({ label = "SNAKE AI", floating = false }: { label?: stri
 
   return <>
     <button className={floating?"snake-float":"button ghost"} aria-haspopup="dialog" aria-label={floating?"Falar com a SNAKE, a IA da Venom Code":undefined} onClick={()=>{track("snake_opened",{entry:floating?"floating":"inline"});shouldFollowConversation.current=true;dialog.current?.showModal();requestAnimationFrame(()=>composerInput.current?.focus());}}>
-      {floating?<><span className="snake-float-label">{label}</span><span className="snake-float-mark"><Image src="/images/snake-assistant.webp" alt="" width={72} height={72}/></span></>:<><Bot size={18} aria-hidden="true"/> {label}</>}
+      {floating?<><span className="snake-float-label">{label}</span><span className="snake-float-mark"><Image src="/images/snake-assistant.webp" alt="" width={72} height={72}/></span></>:<>{identityIcon?<span className="snake-inline-mark" aria-hidden="true"><Image src="/images/snake-assistant.webp" alt="" width={22} height={22}/></span>:<Bot size={18} aria-hidden="true"/>} {label}</>}
     </button>
     <dialog ref={dialog} className="snake-dialog snake-chat-dialog" aria-labelledby={titleId} aria-describedby={descriptionId} onClick={event=>{if(event.target===event.currentTarget)dialog.current?.close();}}>
       <div className="snake-dialog-content">
