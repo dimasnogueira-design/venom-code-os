@@ -4,12 +4,12 @@ import sharp from "sharp";
 
 const source = "C:/Users/imove/OneDrive/Área de Trabalho/Venom Code OS/01-capacidades";
 const targets = [
-  "service-websites.webp",
-  "service-commerce.webp",
-  "service-systems.webp",
-  "service-ai.webp",
-  "service-branding.webp",
-  "service-performance.webp",
+  "capability-websites.webp",
+  "capability-ecommerce.webp",
+  "capability-systems.webp",
+  "capability-ai.webp",
+  "capability-branding.webp",
+  "capability-performance.webp",
 ];
 const files = (await readdir(source))
   .filter((file) => /\.png$/i.test(file))
