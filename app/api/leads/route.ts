@@ -39,7 +39,8 @@ export async function POST(request: Request) {
       source: "landing-page",
       session_id: /^[0-9a-f-]{36}$/i.test(String(body.sessionId ?? "")) ? String(body.sessionId) : null,
     };
-    if (!lead.name || !emailPattern.test(lead.email) || !lead.whatsapp || !lead.interest || !lead.message) return NextResponse.json({ error: "Preencha os campos obrigatórios corretamente." }, { status: 400 });
+    const hasValidContact = Boolean(lead.whatsapp) || emailPattern.test(lead.email);
+    if (!lead.name || !hasValidContact || (lead.email && !emailPattern.test(lead.email)) || !lead.interest || !lead.message) return NextResponse.json({ error: "Preencha os campos obrigatórios corretamente." }, { status: 400 });
     const supabase = createServerSupabase();
     if (!supabase) return NextResponse.json({ error: "Formulário em configuração. Fale conosco novamente em instantes." }, { status: 503 });
     const ipHash = hashIP(clientAddress(request));

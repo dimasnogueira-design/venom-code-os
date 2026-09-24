@@ -85,6 +85,7 @@ export function HeroVideo({ header, children }: { header: ReactNode; children: R
     <section className="hero" id="top" aria-label="VENOM CODE">
       <div className="hero-media" aria-hidden="true">
         <picture>
+          <source media="(max-width: 600px)" srcSet="/media/hero-static-mobile-v2.webp" />
           <source media="(max-width: 900px)" srcSet="/media/hero-static-01-mobile.webp" />
           <Image className="hero-poster" src="/media/hero-static-01.webp" alt="" fill priority unoptimized sizes="100vw" />
         </picture>

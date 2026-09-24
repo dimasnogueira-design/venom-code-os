@@ -78,7 +78,14 @@ export function SnakeAI({ label = "SNAKE AI", floating = false, identityIcon = f
   }
 
   function resetConversation(){ localStorage.removeItem("venom-snake-session"); setSessionId(""); setMessages([greeting]); setInput(""); setState("idle"); setStatusMessage(""); setRemaining(undefined); }
-  function continueBrief(){ const transcript=messages.filter(item=>item.role==="user").map(item=>item.content).join(" "); track("snake_briefing_started",{entry:floating?"floating":"inline"}); dialog.current?.close(); window.dispatchEvent(new CustomEvent("venom-brief",{detail:{interest:"Ainda não tenho certeza",message:`Briefing iniciado com a SNAKE: ${transcript}`}})); document.getElementById("contato")?.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"}); }
+  function continueBrief(){
+    const transcript=messages.filter(item=>item.role==="user").map(item=>item.content).join(" ");
+    const normalized=transcript.toLowerCase();
+    const interest=normalized.includes("vender")||normalized.includes("loja")||normalized.includes("e-commerce")?"E-commerce":normalized.includes("automat")||normalized.includes("ia")?"Automação e IA":normalized.includes("sistema")?"Sistema sob medida":normalized.includes("marca")||normalized.includes("identidade")?"Branding e identidade":"Site ou landing page";
+    const detail={interest,message:`Briefing iniciado com a SNAKE: ${transcript}`,project:interest,objective:transcript||"Transformar a ideia em um próximo passo claro",priority:"Estrutura + conversão"};
+    localStorage.setItem("venom-snake-brief",JSON.stringify(detail));
+    track("snake_briefing_started",{entry:floating?"floating":"inline"}); dialog.current?.close(); window.dispatchEvent(new CustomEvent("venom-brief",{detail})); document.getElementById("contato")?.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"});
+  }
 
   return <>
     <button className={floating?"snake-float":"button ghost"} aria-haspopup="dialog" aria-label={floating?"Falar com a SNAKE, a IA da Venom Code":undefined} onClick={()=>{track("snake_opened",{entry:floating?"floating":"inline"});shouldFollowConversation.current=true;dialog.current?.showModal();requestAnimationFrame(()=>composerInput.current?.focus());}}>

@@ -306,8 +306,8 @@ body:has(.snake-dialog[open]) { overflow:hidden; }
 }
 @media(max-width:600px) {
   .hero-experience .hero { min-height:760px; }
-  .hero-experience .hero-media { height:49%; }
-  .hero-experience .hero-media video,.hero-experience .hero-poster { object-position:70% center; }
+  .hero-experience .hero-media { height:43%; }
+  .hero-experience .hero-media video,.hero-experience .hero-poster { object-position:center top; }
   .hero-experience .hero-content { padding-top:max(82px,calc(72px + env(safe-area-inset-top))); padding-bottom:max(26px,env(safe-area-inset-bottom)); }
   .hero-experience .hero-content > .eyebrow { font-size:8px; letter-spacing:1.45px; }
   .hero-experience .hero-content > h1 { max-width:12ch; margin:14px 0 17px; font-size:clamp(42px,12.3vw,54px); }
