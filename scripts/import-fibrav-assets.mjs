@@ -4,9 +4,9 @@ import sharp from "sharp";
 
 const source = "C:/Users/imove/OneDrive/Área de Trabalho/Venom Code OS/01-capacidades/imagens";
 const targets = [
-  "fibrav-material-original.webp",
-  "fibrav-product-system.webp",
-  "fibrav-digital-experience.webp",
+  "fibrav-material-original-v2.webp",
+  "fibrav-product-system-v2.webp",
+  "fibrav-digital-experience-v2.webp",
 ];
 const files = (await readdir(source))
   .filter((file) => /\.png$/i.test(file))
