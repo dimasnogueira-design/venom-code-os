@@ -194,7 +194,7 @@ body:has(dialog[open]) { overflow:hidden; }
   .service-dialog-hero { gap:18px; margin-bottom:28px; }
   .service-dialog-hero figure { order:-1; margin-inline:-22px; border-inline:0; box-shadow:none; }
   .service-dialog-hero figcaption { left:12px; bottom:10px; }
-  .service-dialog-close { margin-right:-6px; }
+  .service-dialog-close { width:44px; height:44px; min-width:44px; min-height:44px; margin-right:-6px; }
   .service-offers { grid-template-columns:1fr; gap:0; }
   .service-dialog .button { width:100%; }
   .service-dialog-intro { font-size:16px; }
