@@ -119,6 +119,13 @@ export async function POST(request: Request) {
     }
     return json({ sessionId, reply, briefingReady: Boolean(briefing), remaining: Math.max(0, venomAIConfig.maxMessagesPerSession - messageCount - 1) });
   } catch (error) {
+    console.error("venom_ai_request_failed", {
+      name: error instanceof Error ? error.name : "UnknownError",
+      message: error instanceof Error ? error.message : "unknown_error",
+      status: typeof error === "object" && error !== null && "status" in error ? error.status : undefined,
+      code: typeof error === "object" && error !== null && "code" in error ? error.code : undefined,
+      type: typeof error === "object" && error !== null && "type" in error ? error.type : undefined,
+    });
     const unavailable = error instanceof Error && error.message === "storage_unavailable";
     return json({ error: unavailable ? "A conexão da SNAKE está indisponível. Tente novamente em instantes." : "A SNAKE não conseguiu responder agora. Tente novamente.", code: unavailable ? "STORAGE_UNAVAILABLE" : "AI_UNAVAILABLE" }, 503);
   } finally {
