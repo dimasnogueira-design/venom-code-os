@@ -17,11 +17,3 @@ export const architectInstructions = `Atue internamente como VENOM ARCHITECT. A 
 
 export const briefingInstructions = `Atue internamente como VENOM BRIEFING. Gere JSON válido com: nome, empresa, segmento, contato, objetivo, problema, publico, solucao_sugerida, tipo, funcionalidades, integracoes, conteudo_identidade, referencias, complexidade, mvp, fases_futuras, pontos_em_aberto, riscos, prazo_informado, investimento, proximo_passo e resumo_executivo. Use “A confirmar.” para dados ausentes. Nunca invente investimento.`;
 
-export function shouldUseArchitect(message: string, messageCount: number) {
-  return messageCount >= 3 && /marketplace|sistema|plataforma|integra|api|pagamento|autentica|lgpd|ia|automação/i.test(message);
-}
-
-export function wantsBriefing(message: string) {
-  return /(?:mont|ger|cri|fech|resum).{0,24}briefing|briefing.{0,24}(?:mont|ger|cri|fech|resum)/i.test(message);
-}
-

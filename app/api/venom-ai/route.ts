@@ -5,7 +5,8 @@ import { clientAddress, isSameOrigin, readJsonBody } from "@/lib/api-security";
 import { venomAIConfig, safeNumber } from "@/lib/venom-ai/config";
 import { acquireSession, checkRateLimit, hashIP, isClearlyOffScope, isSpam, normalizeMessage, releaseSession } from "@/lib/venom-ai/guards";
 import { consumeDistributedRateLimit } from "@/lib/venom-ai/distributed-rate-limit";
-import { architectInstructions, briefingInstructions, shouldUseArchitect, snakeInstructions, wantsBriefing } from "@/lib/venom-ai/prompts";
+import { architectInstructions, briefingInstructions, snakeInstructions } from "@/lib/venom-ai/prompts";
+import { selectSnakeProfile } from "@/lib/venom-ai/protocol";
 import { createServerSupabase } from "@/lib/venom-ai/supabase";
 
 export const runtime = "nodejs";
@@ -19,6 +20,17 @@ function mockReply(message: string) {
   if (/clínica|clinica/i.test(message)) return "Para uma clínica, o site precisa gerar confiança e facilitar o próximo passo, como agendamento ou contato. Vocês já usam algum sistema de agenda?";
   if (/escola.*inglês|inglês.*escola/i.test(message)) return "Podemos criar uma jornada focada em captação: oferta clara, prova social, teste de nível e contato rápido. Hoje os alunos chegam por qual canal?";
   return "Entendi o ponto de partida. Para desenhar uma solução útil, preciso saber qual resultado de negócio você quer alcançar primeiro.";
+}
+
+function logRequestFailure(stage: string, error: unknown) {
+  console.error("venom_ai_request_failed", {
+    stage,
+    name: error instanceof Error ? error.name : "UnknownError",
+    message: error instanceof Error ? error.message : "unknown_error",
+    status: typeof error === "object" && error !== null && "status" in error ? error.status : undefined,
+    code: typeof error === "object" && error !== null && "code" in error ? error.code : undefined,
+    type: typeof error === "object" && error !== null && "type" in error ? error.type : undefined,
+  });
 }
 
 export async function POST(request: Request) {
@@ -65,15 +77,18 @@ export async function POST(request: Request) {
 
     let history: StoredMessage[] = [];
     let messageCount = 0;
+    let hasBriefing = false;
     if (supabase) {
       const { error: sessionError } = await supabase.from("sessions").upsert({ id: sessionId, ip_hash: ipHash, last_activity: new Date().toISOString(), status: "active" }, { onConflict: "id" });
       if (sessionError) throw new Error("storage_unavailable");
-      const [countResult, historyResult] = await Promise.all([
+      const [countResult, historyResult, briefingResult] = await Promise.all([
         supabase.from("messages").select("id", { count: "exact", head: true }).eq("session_id", sessionId).eq("role", "user"),
         supabase.from("messages").select("role,content").eq("session_id", sessionId).order("created_at", { ascending: false }).limit(safeNumber(venomAIConfig.historyMessages, 10, 2, 16)),
+        supabase.from("briefings").select("id", { count: "exact", head: true }).eq("session_id", sessionId),
       ]);
-      if (countResult.error || historyResult.error) throw new Error("storage_unavailable");
+      if (countResult.error || historyResult.error || briefingResult.error) throw new Error("storage_unavailable");
       messageCount = countResult.count || 0;
+      hasBriefing = (briefingResult.count || 0) > 0;
       if (messageCount >= safeNumber(venomAIConfig.maxMessagesPerSession, 18, 4, 40)) return json({ error: "Esta conversa chegou ao limite. Envie o briefing para o time ou inicie uma nova sessão depois.", code: "SESSION_LIMIT" }, 429);
       history = ((historyResult.data || []) as StoredMessage[]).reverse();
       const { error } = await supabase.from("messages").insert({ session_id: sessionId, role: "user", content: message, ip_hash: ipHash });
@@ -82,50 +97,58 @@ export async function POST(request: Request) {
 
     let reply: string;
     let briefing: Record<string, unknown> | undefined;
-    const useArchitect = venomAIConfig.architectEnabled && shouldUseArchitect(message, messageCount + 1);
-    const useBriefing = venomAIConfig.briefingEnabled && wantsBriefing(message) && messageCount >= 3;
+    let degraded = false;
+    const selectedProfile = selectSnakeProfile({ message, userMessageCount: messageCount + 1, hasBriefing });
+    const useArchitect = venomAIConfig.architectEnabled && selectedProfile === "architect";
+    const useBriefing = venomAIConfig.briefingEnabled && selectedProfile === "briefing";
 
     if (venomAIConfig.mockMode) {
       reply = mockReply(message);
     } else {
       if (!process.env.OPENAI_API_KEY) return json({ error: "A SNAKE está em configuração. Tente novamente mais tarde.", code: "SERVICE_UNAVAILABLE" }, 503);
-      const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, timeout: safeNumber(venomAIConfig.timeoutMs, 16_000, 5_000, 25_000), maxRetries: 1 });
+      const requestTimeout = safeNumber(venomAIConfig.timeoutMs, 20_000, 8_000, 24_000);
+      const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, timeout: requestTimeout, maxRetries: 0 });
       const internalMode = useArchitect ? architectInstructions : "";
       const instructions = internalMode ? `${snakeInstructions}\n\nUse esta função interna apenas para orientar sua resposta ao visitante:\n${internalMode}` : snakeInstructions;
-      const response = await client.responses.create({
-        model: venomAIConfig.model,
-        instructions,
-        input: [...history.map(item => ({ role: item.role, content: item.content })), { role: "user" as const, content: message }],
-        max_output_tokens: safeNumber(venomAIConfig.maxOutputTokens, 420, 120, 800),
-      }, { signal: AbortSignal.timeout(safeNumber(venomAIConfig.timeoutMs, 16_000, 5_000, 25_000)) });
-      reply = response.output_text.trim();
-      if (!reply) throw new Error("empty_model_response");
-      if (useBriefing) {
-        const briefingResponse = await client.responses.create({
+      try {
+        const response = await client.responses.create({
           model: venomAIConfig.model,
-          instructions: briefingInstructions,
-          input: `Conversa:\n${[...history,{role:"user" as const,content:message}].map(item=>`${item.role}: ${item.content}`).join("\n")}\nassistant: ${reply}`,
-          max_output_tokens: 650,
-        }, { signal: AbortSignal.timeout(safeNumber(venomAIConfig.timeoutMs, 16_000, 5_000, 25_000)) });
-        const match = briefingResponse.output_text.match(/\{[\s\S]*\}/);
-        if (match) try { briefing = JSON.parse(match[0]); } catch { /* the visitor still receives the SNAKE answer */ }
+          instructions,
+          input: [...history.map(item => ({ role: item.role, content: item.content })), { role: "user" as const, content: message }],
+          reasoning: { effort: "minimal" },
+          text: { verbosity: "low" },
+          max_output_tokens: safeNumber(venomAIConfig.maxOutputTokens, 420, 120, 800),
+        }, { signal: AbortSignal.timeout(requestTimeout) });
+        reply = response.output_text.trim();
+        if (!reply) throw new Error("empty_model_response");
+        if (useBriefing) {
+          const briefingResponse = await client.responses.create({
+            model: venomAIConfig.model,
+            instructions: briefingInstructions,
+            input: `Conversa:\n${[...history,{role:"user" as const,content:message}].map(item=>`${item.role}: ${item.content}`).join("\n")}\nassistant: ${reply}`,
+            reasoning: { effort: "minimal" },
+            text: { verbosity: "low" },
+            max_output_tokens: 650,
+          }, { signal: AbortSignal.timeout(requestTimeout) });
+          const match = briefingResponse.output_text.match(/\{[\s\S]*\}/);
+          if (match) try { briefing = JSON.parse(match[0]); } catch { /* the visitor still receives the SNAKE answer */ }
+        }
+        if (supabase) await supabase.from("usage_events").insert({ session_id: sessionId, ip_hash: ipHash, model: venomAIConfig.model, input_tokens: response.usage?.input_tokens || 0, output_tokens: response.usage?.output_tokens || 0, duration_ms: Date.now() - startedAt, status: "ok" });
+      } catch (modelError) {
+        logRequestFailure("model", modelError);
+        degraded = true;
+        reply = mockReply(message);
+        if (supabase) await supabase.from("usage_events").insert({ session_id: sessionId, ip_hash: ipHash, model: venomAIConfig.model, duration_ms: Date.now() - startedAt, status: "error" });
       }
-      if (supabase) await supabase.from("usage_events").insert({ session_id: sessionId, ip_hash: ipHash, model: venomAIConfig.model, input_tokens: response.usage?.input_tokens || 0, output_tokens: response.usage?.output_tokens || 0, duration_ms: Date.now() - startedAt, status: "ok" });
     }
 
     if (supabase) {
       await supabase.from("messages").insert({ session_id: sessionId, role: "assistant", content: reply });
       if (briefing) await supabase.from("briefings").insert({ session_id: sessionId, structured_data: briefing });
     }
-    return json({ sessionId, reply, briefingReady: Boolean(briefing), remaining: Math.max(0, venomAIConfig.maxMessagesPerSession - messageCount - 1) });
+    return json({ sessionId, reply, briefingReady: Boolean(briefing), degraded, remaining: Math.max(0, venomAIConfig.maxMessagesPerSession - messageCount - 1) });
   } catch (error) {
-    console.error("venom_ai_request_failed", {
-      name: error instanceof Error ? error.name : "UnknownError",
-      message: error instanceof Error ? error.message : "unknown_error",
-      status: typeof error === "object" && error !== null && "status" in error ? error.status : undefined,
-      code: typeof error === "object" && error !== null && "code" in error ? error.code : undefined,
-      type: typeof error === "object" && error !== null && "type" in error ? error.type : undefined,
-    });
+    logRequestFailure("request", error);
     const unavailable = error instanceof Error && error.message === "storage_unavailable";
     return json({ error: unavailable ? "A conexão da SNAKE está indisponível. Tente novamente em instantes." : "A SNAKE não conseguiu responder agora. Tente novamente.", code: unavailable ? "STORAGE_UNAVAILABLE" : "AI_UNAVAILABLE" }, 503);
   } finally {
