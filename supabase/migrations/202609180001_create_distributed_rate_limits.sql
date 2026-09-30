@@ -9,6 +9,7 @@ create table if not exists public.rate_limits (
 
 alter table public.rate_limits enable row level security;
 revoke all on table public.rate_limits from public, anon, authenticated;
+grant select, insert, update, delete on table public.rate_limits to service_role;
 
 create index if not exists rate_limits_expires_at_idx
   on public.rate_limits (expires_at);
@@ -27,7 +28,7 @@ as $$
 declare
   current_count integer;
   current_expiry timestamptz;
-  current_time timestamptz := clock_timestamp();
+  v_now timestamptz := clock_timestamp();
 begin
   if char_length(p_key_hash) <> 64
     or p_scope not in ('venom-ai', 'leads')
@@ -40,33 +41,33 @@ begin
     scope, key_hash, request_count, window_started_at, expires_at
   )
   values (
-    p_scope, p_key_hash, 1, current_time,
-    current_time + make_interval(secs => p_window_seconds)
+    p_scope, p_key_hash, 1, v_now,
+    v_now + make_interval(secs => p_window_seconds)
   )
   on conflict (scope, key_hash) do update
   set request_count = case
-        when public.rate_limits.expires_at <= current_time then 1
+        when public.rate_limits.expires_at <= v_now then 1
         else public.rate_limits.request_count + 1
       end,
       window_started_at = case
-        when public.rate_limits.expires_at <= current_time then current_time
+        when public.rate_limits.expires_at <= v_now then v_now
         else public.rate_limits.window_started_at
       end,
       expires_at = case
-        when public.rate_limits.expires_at <= current_time
-          then current_time + make_interval(secs => p_window_seconds)
+        when public.rate_limits.expires_at <= v_now
+          then v_now + make_interval(secs => p_window_seconds)
         else public.rate_limits.expires_at
       end
   returning request_count, expires_at into current_count, current_expiry;
 
   delete from public.rate_limits
-  where expires_at < current_time - interval '5 minutes';
+  where expires_at < v_now - interval '5 minutes';
 
   return query select
     current_count <= p_limit,
     greatest(0, p_limit - current_count),
     case when current_count <= p_limit then 0
-      else greatest(1, ceil(extract(epoch from (current_expiry - current_time)))::integer)
+      else greatest(1, ceil(extract(epoch from (current_expiry - v_now)))::integer)
     end;
 end;
 $$;

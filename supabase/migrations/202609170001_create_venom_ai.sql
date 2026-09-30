@@ -48,6 +48,19 @@ revoke all on table public.sessions, public.messages, public.briefings, public.u
 revoke all on table public.leads from anon, authenticated;
 revoke all on sequence public.messages_id_seq, public.usage_events_id_seq from anon, authenticated;
 
+grant select, insert, update, delete on table
+  public.sessions,
+  public.messages,
+  public.briefings,
+  public.usage_events,
+  public.leads
+to service_role;
+
+grant usage, select on sequence
+  public.messages_id_seq,
+  public.usage_events_id_seq
+to service_role;
+
 create index if not exists sessions_last_activity_idx on public.sessions (last_activity desc);
 create index if not exists sessions_ip_hash_idx on public.sessions (ip_hash, created_at desc);
 create index if not exists messages_session_created_idx on public.messages (session_id, created_at);

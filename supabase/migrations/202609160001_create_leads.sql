@@ -16,6 +16,7 @@ create table if not exists public.leads (
 alter table public.leads enable row level security;
 
 revoke all on public.leads from anon, authenticated;
+grant select, insert, update, delete on table public.leads to service_role;
 
 create index if not exists leads_created_at_idx on public.leads (created_at desc);
 create index if not exists leads_status_idx on public.leads (status);
