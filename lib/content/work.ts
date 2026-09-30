@@ -21,7 +21,7 @@ const records: Array<Omit<WorkCase, "desktop" | "mobile"> & { landscape?: boolea
   { slug: "ecoforce", title: "Ecoforce", category: "Marca e produto", description: "Sistema de marca e aplicações para uma linha de soluções ecológicas.", alt: "Painel visual Ecoforce com identidade e aplicações de produto" },
   { slug: "madeira-getuba", title: "Madeira Getuba", category: "Identidade e presença", description: "Identidade de marca e comunicação para uma empresa do setor madeireiro.", alt: "Painel visual Madeira Getuba com identidade, sinalização e presença digital" },
   { slug: "contabilidade-ouro", title: "Contabilidade Ouro", category: "Marca corporativa", description: "Posicionamento e linguagem visual para serviços de contabilidade.", alt: "Painel visual Contabilidade Ouro com identidade e website" },
-  { slug: "inovamix", title: "Inovamix", category: "Marca industrial", description: "Identidade e comunicação para soluções industriais.", alt: "Painel visual Inovamix com identidade e aplicações" },
+  { slug: "inovamix", title: "Inovamix", category: "Marca industrial", description: "Identidade e comunicação para soluções industriais.", alt: "Painel visual Inovamix com identidade e aplicações", hasMobile: false },
   { slug: "gtec-bikes", title: "GTEC Bikes", category: "Marca e produto", description: "Universo visual para uma marca conectada ao ciclismo e à performance.", alt: "Painel visual GTEC Bikes com produtos, marca e presença digital" },
   { slug: "gallo", title: "Gallo", category: "Marca e editorial", description: "Identidade e aplicações editoriais para uma marca de produto.", alt: "Painel visual Gallo com identidade, embalagens e materiais" },
   { slug: "xp55", title: "XP55 Global Trade Solutions", category: "Marca e logística", description: "Sistema visual corporativo para soluções globais de comércio.", alt: "Painel visual XP55 com identidade e comunicação corporativa" },
@@ -35,7 +35,7 @@ const records: Array<Omit<WorkCase, "desktop" | "mobile"> & { landscape?: boolea
   { slug: "cosmos", title: "Cosmos Mel do Brasil", category: "Marca e produto", description: "Identidade e comunicação para uma marca brasileira de mel.", alt: "Painel visual Cosmos Mel do Brasil com identidade e embalagens" },
   { slug: "disciplina-os", title: "Disciplina OS", category: "Produto digital", description: "Conceito de produto digital e sistema de interface.", alt: "Painel visual Disciplina OS com interface de produto digital" },
   { slug: "stay12", title: "STAY12", category: "Produto digital", description: "Conceito de experiência digital para hospitalidade.", alt: "Painel visual STAY12 com telas de produto digital" },
-  { slug: "auryk", title: "Auryk", category: "E-commerce premium", description: "Direção visual para uma experiência de compra premium.", alt: "Painel visual Auryk com interface de e-commerce", hasMobile: false },
+  { slug: "auryk", title: "Auryk", category: "E-commerce premium", description: "Direção visual para uma experiência de compra premium.", alt: "Painel visual Auryk com interface de e-commerce" },
   { slug: "rebel-armor", title: "Rebel Armor", category: "E-commerce premium", description: "Identidade e experiência de produto para uma marca de alto impacto.", alt: "Painel visual Rebel Armor com interface de e-commerce", hasMobile: false },
 ];
 
