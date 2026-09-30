@@ -26,7 +26,9 @@ export function HeroVideo({ header, children }: { header: ReactNode; children: R
 
   useEffect(() => {
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!motion.matches && !window.location.hash && window.scrollY < 80) setPhase("welcome");
+    const mobile = window.matchMedia("(max-width: 900px)");
+    if (mobile.matches) setPhase("ready");
+    else if (!motion.matches && !window.location.hash && window.scrollY < 80) setPhase("welcome");
     const preference = () => { if (motion.matches) finish(); };
     const visibility = () => { if (document.hidden && active.current) finish(); };
     const scroll = () => { setScrolled(window.scrollY > 24); if (window.scrollY > 80) finish(); };
@@ -85,8 +87,7 @@ export function HeroVideo({ header, children }: { header: ReactNode; children: R
     <section className="hero" id="top" aria-label="VENOM CODE">
       <div className="hero-media" aria-hidden="true">
         <picture>
-          <source media="(max-width: 600px)" srcSet="/media/hero-static-mobile-v2.webp" />
-          <source media="(max-width: 900px)" srcSet="/media/hero-static-01-mobile.webp" />
+          <source media="(max-width: 900px)" srcSet="/media/hero-mobile=new.png" />
           <Image className="hero-poster" src="/media/hero-static-01.webp" alt="" fill priority unoptimized sizes="100vw" />
         </picture>
         <video ref={videoRef} playsInline preload="none" poster="/media/hero-static-01.webp" tabIndex={-1} disablePictureInPicture
