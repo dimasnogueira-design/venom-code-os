@@ -4,6 +4,8 @@ import { safeNumber, venomAIConfig } from "@/lib/venom-ai/config";
 import { consumeDistributedRateLimit } from "@/lib/venom-ai/distributed-rate-limit";
 import { hashIP } from "@/lib/venom-ai/guards";
 import { createServerSupabase } from "@/lib/venom-ai/supabase";
+import { resolveLeadMessage } from "@/lib/leads/flow";
+import { sendLeadNotification } from "@/lib/leads/notification";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_BODY_BYTES = 12_000;
@@ -35,7 +37,7 @@ export async function POST(request: Request) {
       email: raw.email,
       whatsapp: raw.whatsapp,
       interest: raw.interest,
-      message: raw.message,
+      message: resolveLeadMessage(raw.message, raw.interest),
       source: "landing-page",
       session_id: /^[0-9a-f-]{36}$/i.test(String(body.sessionId ?? "")) ? String(body.sessionId) : null,
     };
@@ -59,9 +61,19 @@ export async function POST(request: Request) {
       { error: "Muitas tentativas em sequência. Aguarde um pouco e tente novamente." },
       { status: 429, headers: { "Retry-After": String(rate.retryAfter) } },
     );
-    const { error } = await supabase.from("leads").insert(lead);
+    const { data: savedLead, error } = await supabase.from("leads").insert(lead).select("id").single();
     if (error) throw error;
-    return NextResponse.json({ ok: true });
+    let notificationDelivered = false;
+    try {
+      notificationDelivered = await sendLeadNotification(lead, String(savedLead.id));
+    } catch (notificationError) {
+      console.error("lead_email_failed", {
+        name: notificationError instanceof Error ? notificationError.name : "UnknownError",
+        message: notificationError instanceof Error ? notificationError.message : "unknown_error",
+        leadId: savedLead.id,
+      });
+    }
+    return NextResponse.json({ ok: true, notificationDelivered });
   } catch {
     return NextResponse.json({ error: "Não foi possível enviar agora. Tente novamente." }, { status: 500 });
   }

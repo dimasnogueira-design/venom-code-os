@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "test:gate0": "node scripts/gate0-api-smoke.mjs",
     "test:gate1-core": "node scripts/gate1-core-check.mjs && node scripts/gate1-content-check.mjs",
-    "test:snake-protocol": "node scripts/snake-protocol-check.mjs"
+    "test:snake-protocol": "node scripts/snake-protocol-check.mjs",
+    "test:lead-flow": "node scripts/lead-flow-check.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.57.4",
