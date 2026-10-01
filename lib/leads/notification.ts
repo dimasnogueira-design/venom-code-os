@@ -46,6 +46,14 @@ export async function sendLeadNotification(lead: LeadNotification, idempotencyKe
     }),
   });
 
-  if (!response.ok) throw new Error("email_delivery_failed");
+  if (!response.ok) {
+    const details = await response.json().catch(() => ({})) as { name?: string; message?: string };
+    console.error("resend_send_failed", {
+      status: response.status,
+      name: details.name || "unknown",
+      message: details.message || "unknown_error",
+    });
+    throw new Error("email_delivery_failed");
+  }
   return true;
 }
