@@ -4,7 +4,7 @@
 
 ## Objetivo
 Criar uma demonstração **privada funcional, quase produto acabado**, por iniciativa própria da Venom Code, para surpreender o dono da Biju Mani e vender o projeto. **A empresa não pediu o site.** Não comunicar que existe aprovação, integração oficial ou contrato.
-Prazo aspiracional: prévia para 10/10/2026, somente se revisada. Próxima sessão desktop: PRODUZIR, sem começar do zero.
+Prazo aspiracional: prévia para sábado, 10/10/2026, somente se revisada. Próxima sessão desktop: PRODUZIR, sem começar do zero.
 
 ## Identidade oficial observada nos screenshots
 O usuário enviou fotos da fachada, placa, interiores e parede artística. **Preservar a logomarca real** com caligrafia Biju Mani, símbolo gráfico e assinatura 'Brazilian Ice Cream Co.'. Paleta visível: verde profundo, amarelo quente, laranja/terracota, creme, oliva e formas botânicas. Mural com figura abstrata de aparência aviária e grafismos vegetais. Não inventar mascote, não substituir logotipo pelo lettering de mockups anteriores. Para publicação final, obter SVG e brandbook original.
