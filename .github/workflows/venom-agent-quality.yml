@@ -1,0 +1,35 @@
+name: VENOM Agent Quality Gate
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: venom-quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static-quality:
+    name: Lint, TypeScript and core checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: ESLint
+        run: npm run lint
+      - name: TypeScript
+        run: npx tsc --noEmit
+      - name: VENOM core/content checks
+        run: npm run test:gate1-core
