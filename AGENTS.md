@@ -36,3 +36,12 @@ This file configures coding assistants in the VENOM CODE repository. Read it at 
 - No production deployment, environment-variable changes, migrations, destructive actions, external messaging or financial commitments without explicit approval.
 - Before claiming done, report which checks ran and their actual results. Run `npm run lint`, `npx tsc --noEmit`, `npm run test:gate1-core` where execution is available; relevant additional checks for modified flows.
 - The GitHub Actions `venom-agent-quality.yml` enforces repository static checks on pull requests. It does not invoke an LLM, install browser binaries, or approve releases.
+
+## Security and delivery gates (mandatory)
+
+- Before coding or changing UI: use `venom-delivery-gate` to define acceptance criteria and delivery evidence.
+- Before review/release: use `code-review-security`; when relevant select `web-security-review`, `api-security-review`, `secrets-scan`, and `sca-audit`.
+- Pentest/security audit -> `venom-pentest`: source/config review by default; authorized staging passive scans only with target scope confirmed, active tests require explicitly approved exact scope. No third-party testing or production active fuzzing.
+- Security-sensitive changes (access control, auth, session, payments, AI agent, webhooks, API, rate limits, storage) -> focused security review + regression tests. Never expose production keys.
+- Before client handoff: `venom-delivery-gate` with mobile, function, code, copy, security and test evidence.
+- CodeQL source analysis on PRs is not a penetration test. Human approves merges and releases.

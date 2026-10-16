@@ -29,3 +29,12 @@ Start by classifying the task and reading the applicable `SKILL.md` files under 
 
 ## Handoff
 Report selected skills, changes made, evidence of checks actually run, checks not performed and approvals still required.
+
+## Security and delivery gates (mandatory)
+
+- Before coding or changing UI: use `venom-delivery-gate` to define acceptance criteria and delivery evidence.
+- Before review/release: use `code-review-security`; when relevant select `web-security-review`, `api-security-review`, `secrets-scan`, and `sca-audit`.
+- Pentest/security audit -> `venom-pentest`: source/config review by default; authorized staging passive scans only with target scope confirmed, active tests require explicitly approved exact scope. No third-party testing or production active fuzzing.
+- Security-sensitive changes (access control, auth, session, payments, AI agent, webhooks, API, rate limits, storage) -> focused security review + regression tests. Never expose production keys.
+- Before client handoff: `venom-delivery-gate` with mobile, function, code, copy, security and test evidence.
+- CodeQL source analysis on PRs is not a penetration test. Human approves merges and releases.
