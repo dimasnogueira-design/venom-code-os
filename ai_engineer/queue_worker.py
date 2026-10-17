@@ -3,8 +3,13 @@ from __future__ import annotations
 
 from dataclasses import asdict
 from hashlib import sha256
+import asyncio
+import json
+import os
 import re
 from typing import Any, Awaitable, Callable
+from urllib.error import URLError
+from urllib.request import Request, urlopen
 from uuid import UUID
 
 from vercel.queue import Message, send, subscribe
@@ -72,6 +77,7 @@ async def process_staging_job(
     payload: Any,
     message_id: str,
     publisher: Callable[..., Awaitable[Any]] | None = None,
+    result_callback: Callable[[dict[str, Any]], Awaitable[Any]] | None = None,
 ) -> dict[str, Any]:
     job = validate_staging_job(payload)
     result = build_worker_result(job, message_id)
@@ -81,7 +87,35 @@ async def process_staging_job(
         retention=RESULT_RETENTION_SECONDS,
         idempotency_key=f"result:{job['jobId']}",
     )
+    callback_url = os.environ.get("VENOM_ENGINEER_RESULT_WEBHOOK_URL", "").strip()
+    callback_token = os.environ.get("VENOM_ENGINEER_RESULT_TOKEN", "").strip()
+    if callback_url or callback_token or result_callback:
+        if not result_callback and (not callback_url.startswith("https://") or not callback_token):
+            raise RuntimeError("staging result callback requires HTTPS URL and configured token")
+        await (result_callback or post_staging_result)(result)
     return result
+
+
+async def post_staging_result(result: dict[str, Any]) -> None:
+    """Deliver only the redacted plan metadata to the private staging API."""
+    url = os.environ["VENOM_ENGINEER_RESULT_WEBHOOK_URL"].strip()
+    token = os.environ["VENOM_ENGINEER_RESULT_TOKEN"].strip()
+
+    def post() -> None:
+        request = Request(
+            url,
+            data=json.dumps(result, separators=(",", ":")).encode("utf-8"),
+            headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urlopen(request, timeout=8) as response:
+                if response.status not in (200, 202):
+                    raise RuntimeError(f"staging result callback returned HTTP {response.status}")
+        except URLError as exc:
+            raise RuntimeError("staging result callback unavailable") from exc
+
+    await asyncio.to_thread(post)
 
 
 @subscribe(topic=ENGINEERING_TOPIC, retry_after=60, max_attempts=3)

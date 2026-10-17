@@ -130,5 +130,6 @@ Nenhuma dessas pendências deve bloquear pesquisas, planos e testes locais sem c
 - [x] Smoke local autenticado: `/os` e `/api/os/status` responderam 200 e exibiram os estados esperados; o teste foi observado em RED (404 sem a página) e GREEN após implementação.
 - [x] Verificação de código: `npm run build`; política de staging 3/3; testes Python 13/13 incluindo entrega local pela fila embutida e publicação do resultado do worker.
 - [ ] Homologar entrega/consumo no Vercel Queue remoto com uma missão sintética. O build Preview está READY, mas a ferramenta remota não aceita `Authorization` Basic para chamar as rotas protegidas; o teste local não substitui o teste remoto.
-- [ ] Implementar leitura persistente do resultado do job no painel; por ora, o despacho exibe o protocolo retornado pela fila e o resultado do worker fica publicado no tópico de resultados.
+- [x] Implementar localmente callback autenticado do AI_ENGINEER para armazenamento privado exclusivo e consulta/poll do painel; a homologação da persistência depende de configurar staging sem misturar bancos.
+- [ ] Aplicar `commander-migrations/001_engineer_results.sql` somente no Supabase privado do Commander, cadastrar os segredos de staging documentados em `ai_engineer/README.md` e validar retorno persistido ponta a ponta.
 - [ ] Conectar Gmail e WhatsApp oficiais, revisar dados financeiros em banco pessoal separado, implementar canal de notificação/handoff e auditar QA/security antes de qualquer operação com dados reais.

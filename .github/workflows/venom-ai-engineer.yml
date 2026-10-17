@@ -23,7 +23,7 @@ jobs:
       - name: Python version
         run: python3 --version
       - name: Commander staging queue policy
-        run: node --test scripts/commander-queue-policy.test.mjs
+        run: node --test scripts/commander-queue-policy.test.mjs scripts/commander-result-contract.test.mjs
       - name: Install pinned Python dependencies
         run: python3 -m pip install -r ai_engineer/requirements.txt
       - name: Unit regression suite

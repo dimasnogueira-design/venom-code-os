@@ -34,6 +34,8 @@ function agentStatus(id: string) {
 
 export async function GET() {
   const preview = process.env.VERCEL_ENV === "preview";
+  const privateStoreUrl = process.env.VENOM_OS_PRIVATE_SUPABASE_URL?.replace(/\/$/, "");
+  const crmUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL)?.replace(/\/$/, "");
   const queueConfigured = preview
     && process.env.COMMANDER_MODE === "queue"
     && process.env.VENOM_QUEUE_ENABLED === "true";
@@ -44,6 +46,7 @@ export async function GET() {
     commander: queueConfigured ? "QUEUE_CONFIGURED_UNVERIFIED" : "SIMULATION_ONLY",
     queue: queueConfigured ? "CONFIGURED_NOT_HOMOLOGATED" : "DISABLED",
     durableStore: process.env.VENOM_OS_DATABASE_URL ? "CONFIGURED" : "NOT_CONFIGURED",
+    resultStore: preview && privateStoreUrl && privateStoreUrl !== crmUrl && process.env.VENOM_OS_PRIVATE_SUPABASE_SERVICE_ROLE_KEY && process.env.VENOM_ENGINEER_RESULT_TOKEN ? "CONFIGURED_STAGING_UNVERIFIED" : "NOT_CONFIGURED",
     approvalWorkflow: "NOT_IMPLEMENTED",
     whatsapp: "LOCAL_OBSERVATION_ONLY",
     gmail: "NOT_CONNECTED",

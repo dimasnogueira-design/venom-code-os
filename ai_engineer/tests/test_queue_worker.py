@@ -77,6 +77,28 @@ class QueueWorkerTests(unittest.TestCase):
         self.assertEqual(options["retention"], 3600)
         self.assertEqual(result["status"], "PLAN_ONLY_NOT_EXECUTED")
 
+    def test_processing_delivers_redacted_result_to_staging_callback(self):
+        payload = {
+            "jobId": str(uuid4()),
+            "environment": "staging",
+            "mode": "offline",
+            "mission": "AI_ENGINEER: deliver a synthetic offline result",
+        }
+        published = []
+        callbacks = []
+
+        async def publish(topic, result, **options):
+            published.append((topic, result, options))
+
+        async def callback(result):
+            callbacks.append(result)
+
+        asyncio.run(process_staging_job(payload, "queue-message-789", publish, callback))
+
+        self.assertEqual(len(callbacks), 1)
+        self.assertEqual(callbacks[0]["jobId"], payload["jobId"])
+        self.assertNotIn(payload["mission"], str(callbacks[0]))
+
     def test_embedded_queue_delivers_job_to_ai_engineer_and_persists_result(self):
         payload = {
             "jobId": str(uuid4()),

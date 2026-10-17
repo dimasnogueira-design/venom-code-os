@@ -30,6 +30,7 @@ type SystemStatus = {
   commander: string;
   queue: string;
   durableStore: string;
+  resultStore: string;
   approvalWorkflow: string;
   whatsapp: string;
   gmail: string;
@@ -47,6 +48,9 @@ type MissionResult = {
   mode?: string;
   jobId?: string;
   messageId?: string | null;
+  workstreams?: string[];
+  acceptance?: string[];
+  restrictions?: string[];
   error?: string;
 };
 
@@ -64,6 +68,10 @@ const friendlyStatus: Record<string, string> = {
   PROTECTED: "ACESSO PROTEGIDO",
   AUTH_NOT_CONFIGURED: "ACESSO NÃO CONFIGURADO",
   NOT_CONFIGURED: "NÃO CONFIGURADO",
+  CONFIGURED_STAGING: "STAGING CONFIGURADO",
+  CONFIGURED_STAGING_UNVERIFIED: "STAGING · NÃO VALIDADO",
+  PENDING: "AGUARDANDO WORKER",
+  COMPLETED: "RESULTADO RECEBIDO",
 };
 
 function statusLabel(value: string | undefined) {
@@ -103,6 +111,42 @@ export default function CommandCenterPage() {
       });
     return () => controller.abort();
   }, []);
+
+  useEffect(() => {
+    const jobId = result?.jobId;
+    if (!jobId || !["QUEUED", "ACCEPTED_PENDING_INGESTION"].includes(result?.status || "") || system?.resultStore !== "CONFIGURED_STAGING_UNVERIFIED") return;
+    let active = true;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const deadline = Date.now() + 60_000;
+    const poll = async () => {
+      try {
+        const response = await fetch(`/api/commander/jobs/${encodeURIComponent(jobId)}`, {
+          cache: "no-store",
+          credentials: "same-origin",
+        });
+        if (!response.ok) throw new Error("Falha ao consultar o retorno do worker.");
+        const body = await response.json() as { status: string; result?: { workstreams?: string[]; acceptance?: string[]; restrictions?: string[] } };
+        if (!active) return;
+        if (body.status === "COMPLETED" && body.result) {
+          setResult((current) => current?.jobId === jobId ? {
+            ...current,
+            title: "Plano do AI ENGINEER recebido",
+            diagnosis: "O worker concluiu um plano offline. Nenhum código foi alterado nem ação externa executada.",
+            plan: body.result?.workstreams || [],
+            agents: ["AI_ENGINEER"],
+            audit: `Aceite: ${(body.result?.acceptance || []).join(" · ")} Restrições: ${(body.result?.restrictions || []).join(" · ")}`,
+            status: "COMPLETED",
+          } : current);
+          return;
+        }
+        if (Date.now() < deadline) timer = setTimeout(poll, 2_000);
+      } catch {
+        if (active && Date.now() < deadline) timer = setTimeout(poll, 4_000);
+      }
+    };
+    void poll();
+    return () => { active = false; if (timer) clearTimeout(timer); };
+  }, [result?.jobId, result?.status, system?.resultStore]);
 
   async function submitMission(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -198,7 +242,7 @@ export default function CommandCenterPage() {
             {result.error ? <p role="alert">{result.error}</p> : (
               <>
                 {result.diagnosis && <p>{result.diagnosis}</p>}
-                {queued && <p>A fila aceitou o trabalho. O AI_ENGINEER executa em modo offline; o resultado ficará identificado pelo protocolo abaixo.</p>}
+                {queued && result.status !== "COMPLETED" && <p>A fila aceitou o trabalho. {system?.resultStore === "CONFIGURED_STAGING_UNVERIFIED" ? "Aguardando retorno do worker." : "A persistência do retorno ainda não está configurada neste staging."}</p>}
                 {result.plan && <ol>{result.plan.map((item, index) => <li key={`${index}-${item}`}>{item}</li>)}</ol>}
                 {result.agents && <div className="agentTags">{result.agents.map((agent) => <b key={agent}>{agent}</b>)}</div>}
                 {result.audit && <div className="auditBox"><strong>QA / AUDITORIA</strong><p>{result.audit}</p></div>}
@@ -216,6 +260,8 @@ export default function CommandCenterPage() {
           <article><span>FILA DURÁVEL</span><strong>{statusLabel(system?.queue)}</strong><small><Clock3 size={12} /> {stagingQueue ? "Staging · testes limitados" : "Aguardando homologação"}</small></article>
           <article><span>AGENTES NO CATÁLOGO</span><strong>{system ? catalogAgents : "—"}</strong><small><Check size={12} /> Status carregado da API</small></article>
         </section>
+
+        <p className="jobReference">Retorno persistente do AI ENGINEER: {statusLabel(system?.resultStore)} · banco exclusivo do Commander</p>
 
         <div className="grid">
           <section className="panel" id="auditoria">

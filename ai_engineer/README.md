@@ -38,6 +38,13 @@ Vercel continua como painel/frontend; um worker Python persistente poderá ser e
 - O modo queue é exclusivo de preview; produção e desenvolvimento continuam no comportamento já configurado. A autenticação existente de `/api/commander` continua obrigatória.
 - O resultado é um plano offline (`PLAN_ONLY_NOT_EXECUTED`), não prova execução de mudanças. O painel/consulta de resultados, OpenAI com chave de staging e worker persistente em 24/7 permanecem fora deste piloto.
 
+### Retorno persistente em staging
+- O worker pode publicar o plano redigido em `POST /api/internal/engineer-result`; o painel consulta `GET /api/commander/jobs/{jobId}` e atualiza o cartão da missão.
+- O armazenamento usa apenas `commander-migrations/001_engineer_results.sql`, em um projeto Supabase privado dedicado ao Commander. Não aplique essa migration no banco comercial.
+- Configuração necessária no ambiente Preview e no worker local: `VENOM_OS_PRIVATE_SUPABASE_URL`, `VENOM_OS_PRIVATE_SUPABASE_SERVICE_ROLE_KEY` e o mesmo segredo aleatório em `VENOM_ENGINEER_RESULT_TOKEN`. No worker, `VENOM_ENGINEER_RESULT_WEBHOOK_URL` deve apontar para o endpoint do Preview.
+- A rota rejeita produção, valida token, payload e UUID, impede apontar o armazenamento para a URL comercial configurada, guarda apenas plano sem missão original e expira consultas após uma hora. O segredo do service role fica somente no servidor.
+- A implementação local não configura esses segredos nem aplica migrations. Sem eles o painel informa o bloqueio e o fluxo da fila continua sem fingir que o retorno foi persistido.
+
 Verificação local:
 ```bash
 npm run test:commander-queue
