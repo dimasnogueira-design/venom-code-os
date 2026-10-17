@@ -1,8 +1,12 @@
 import OpenAI from 'openai';
+import { send } from '@vercel/queue';
+import { randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
+import { assessStagingMission } from '@/lib/commander-queue-policy.mjs';
 
 const MAX_BODY_BYTES = 16_384;
 const MAX_MISSION_CHARACTERS = 4_000;
+const ENGINEERING_QUEUE_TOPIC = 'venom-engineering-staging';
 
 const SYSTEM = `Você é COMMANDER, o orquestrador central da VENOM CODE, uma agência digital AI-native.
 Sua função não é simplesmente responder ao usuário: é transformar uma missão comercial confusa em um plano operacional profissional.
@@ -89,6 +93,44 @@ export async function POST(request: Request) {
     const normalizedMission = mission.trim();
     if (normalizedMission.length > MAX_MISSION_CHARACTERS) {
       return NextResponse.json({ error: 'A missão deve ter no máximo 4.000 caracteres.' }, { status: 413 });
+    }
+
+    if (process.env.COMMANDER_MODE === 'queue') {
+      if (process.env.VERCEL_ENV !== 'preview' || process.env.VENOM_QUEUE_ENABLED !== 'true') {
+        return NextResponse.json({ error: 'A fila do AI_ENGINEER está disponível apenas no staging autorizado.' }, {
+          status: 503,
+          headers: { 'Cache-Control': 'no-store' },
+        });
+      }
+
+      const assessment = assessStagingMission(normalizedMission);
+      if (!assessment.ok) {
+        return NextResponse.json({ error: assessment.reason }, { status: 400 });
+      }
+
+      const requestedIdempotencyKey = request.headers.get('idempotency-key')?.trim() || '';
+      const jobId = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestedIdempotencyKey)
+        ? requestedIdempotencyKey.toLowerCase()
+        : randomUUID();
+      const { messageId } = await send(ENGINEERING_QUEUE_TOPIC, {
+        jobId,
+        environment: 'staging',
+        mode: 'offline',
+        mission: assessment.mission,
+      }, {
+        idempotencyKey: `engineer:${jobId}`,
+        retentionSeconds: 3600,
+      });
+
+      return NextResponse.json({
+        jobId,
+        messageId,
+        status: messageId ? 'QUEUED' : 'ACCEPTED_PENDING_INGESTION',
+        mode: 'STAGING_OFFLINE',
+      }, {
+        status: 202,
+        headers: { 'Cache-Control': 'no-store' },
+      });
     }
 
     // Zero-cost development mode. Set COMMANDER_MODE=live when API billing is available.

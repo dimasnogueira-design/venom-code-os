@@ -62,9 +62,10 @@ Atualizado em 2026-10-17. Documento operacional público sem credenciais ou dado
 - [x] Criar código Python, políticas de acesso e sete testes locais demonstrativos.
 - [x] Criar reconhecimento de missões de engenharia pelo Commander (roteamento conceitual; não é execução live).
 - [x] Executar testes do módulo sincronizado com a branch via CI do GitHub (7 testes Python e compilação aprovados no workflow #39048165520 em 17/10/2026).
-- [ ] Criar interface autenticada COMMANDER → fila → worker AI_ENGINEER.
+- [x] Implementar interface protegida do COMMANDER → fila durável → worker AI_ENGINEER em modo staging/offline; validar entrega local com fila embutida e idempotência.
+- [ ] Validar publicação e consumo pela fila hospedada no Preview Vercel (depende de OIDC habilitado para a aplicação e credenciais de autenticação do Preview).
 - [ ] Configurar OpenAI API pelo secret manager e orçamento antes de chamadas pagas.
-- [ ] Garantir que APIs pessoais/financeiras jamais se misturem à agência.
+- [x] Aplicar bloqueios de marcadores de PII/financeiro e impedir dados Gmail/WhatsApp no payload da fila de staging; filtros são uma barreira de escopo, não substituem revisão/controle de acesso.
 - [ ] Hospedar worker persistente em serviço separado, após benchmark de custos e QA (Hostinger VPS é opção, não obrigação).
 - [ ] Rodar benchmark Claude Code vs OpenAI no mesmo conjunto de tarefas e orçamento para decidir se vale assinar.
 - [ ] Criar relatório de produtividade e evolução tecnológica com resultados verificáveis.

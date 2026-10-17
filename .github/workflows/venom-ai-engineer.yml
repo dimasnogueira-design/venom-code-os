@@ -22,6 +22,10 @@ jobs:
           persist-credentials: false
       - name: Python version
         run: python3 --version
+      - name: Commander staging queue policy
+        run: node --test scripts/commander-queue-policy.test.mjs
+      - name: Install pinned Python dependencies
+        run: python3 -m pip install -r ai_engineer/requirements.txt
       - name: Unit regression suite
         run: python3 -m unittest discover -s ai_engineer/tests -v
       - name: Compile Python

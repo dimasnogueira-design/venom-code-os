@@ -10,11 +10,13 @@
     "test:gate0": "node scripts/gate0-api-smoke.mjs",
     "test:gate1-core": "node scripts/gate1-core-check.mjs && node scripts/gate1-content-check.mjs",
     "test:snake-protocol": "node scripts/snake-protocol-check.mjs",
-    "test:lead-flow": "node scripts/lead-flow-check.mjs"
+    "test:lead-flow": "node scripts/lead-flow-check.mjs",
+    "test:commander-queue": "node --test scripts/commander-queue-policy.test.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.57.4",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/queue": "0.8.0",
     "@vercel/speed-insights": "^2.0.0",
     "lucide-react": "0.544.0",
     "next": "15.5.26",
