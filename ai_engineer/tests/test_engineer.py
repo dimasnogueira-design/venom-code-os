@@ -33,6 +33,14 @@ class EngineerTests(unittest.TestCase):
                 with self.subTest(name=name), self.assertRaises(AccessDenied):
                     cap.write_text(name, "secret")
 
+    def test_case_insensitive_sensitive_components(self):
+        with tempfile.TemporaryDirectory() as directory:
+            cap = Capabilities(Path(directory), allow_write=True)
+            for name in (".GIT/config", ".ENV.local", "Private/token.txt",
+                         "DATA/notes.txt", "CREDENTIALS/record.txt"):
+                with self.subTest(name=name), self.assertRaises(AccessDenied):
+                    cap.write_text(name, "secret")
+
     def test_symlink_outside(self):
         with tempfile.TemporaryDirectory() as directory, tempfile.TemporaryDirectory() as outside:
             Path(directory, "escape").symlink_to(Path(outside), target_is_directory=True)
