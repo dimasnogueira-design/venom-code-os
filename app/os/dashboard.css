@@ -1,0 +1,32 @@
+.content>.safetyNotice{display:flex;gap:12px;align-items:flex-start;margin:-10px 0 18px;padding:14px 16px;border:1px solid #3b3323;background:#12110d;color:#ffcf83}
+.safetyNotice>svg{flex:0 0 auto;margin-top:2px}
+.safetyNotice strong,.safetyNotice span{display:block}
+.safetyNotice strong{font-size:11px;letter-spacing:.08em}
+.safetyNotice span{margin-top:4px;color:#a89b80;font-size:11px;line-height:1.5}
+.missionInput #mission-hint{display:block;color:#6f7b72;font-size:9px;margin-top:4px}
+.statePill{display:inline-flex!important;align-items:center;max-width:185px;padding:6px 8px;border:1px solid #303832;font-size:8px!important;line-height:1.35;letter-spacing:.06em!important;color:#a9b4ab!important;background:#101411;white-space:normal}
+.statePill.ready{border-color:#31553a;color:#a4f092!important}
+.statePill.review{border-color:#534126;color:#ffd084!important}
+.statePill.pending{border-color:#393c39;color:#a0a7a1!important}
+.panelHead>.statePill{margin-left:12px}
+.pipeline strong{font-size:10px;letter-spacing:.04em}
+.pipeline .live strong{color:#c9ffc1}
+.pipeline span{line-height:1.45}
+.jobReference{color:#78837b;font-size:10px!important;word-break:break-word}
+.jobReference code{color:#a6f394}
+.statusError{display:flex;align-items:center;gap:7px;color:#ffc27c;font-size:11px}
+.loadingState{color:#68736b;font-size:11px}
+.integrationGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.integrationGrid>.panel{display:flex;align-items:flex-start;gap:12px;padding:16px}
+.integrationGrid>.panel>svg{flex:0 0 auto;color:#84eb72}
+.integrationGrid strong,.integrationGrid span,.integrationGrid small{display:block}
+.integrationGrid strong{font-size:11px}
+.integrationGrid span{margin:7px 0;color:#ffd084;font-size:8px;letter-spacing:.08em}
+.integrationGrid small{color:#69736c;font-size:10px;line-height:1.45}
+.agent .statePill{font-size:7px!important;max-width:145px}
+.commanderResult .panelHead span{display:block}
+.commanderResult .panelHead h2{font-size:17px}
+.commanderResult li{margin:5px 0}
+.commanderResult [role="alert"]{color:#ffae9f}
+@media(max-width:900px){.integrationGrid{grid-template-columns:1fr}.statePill{max-width:145px}.pipeline{grid-template-columns:1fr 1fr}.safetyNotice{margin-top:0}}
+@media(max-width:480px){.metrics{grid-template-columns:1fr 1fr}.metrics strong{font-size:15px}.agent{grid-template-columns:32px 1fr}.agent>.statePill{grid-column:2;justify-self:start}.pipeline div{padding:9px;min-height:84px}}

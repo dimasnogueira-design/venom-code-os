@@ -1,8 +1,12 @@
 import OpenAI from 'openai';
+import { send } from '@vercel/queue';
+import { randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
+import { assessStagingMission } from '@/lib/commander-queue-policy.mjs';
 
 const MAX_BODY_BYTES = 16_384;
 const MAX_MISSION_CHARACTERS = 4_000;
+const ENGINEERING_QUEUE_TOPIC = 'venom-engineering-staging';
 
 const SYSTEM = `Você é COMMANDER, o orquestrador central da VENOM CODE, uma agência digital AI-native.
 Sua função não é simplesmente responder ao usuário: é transformar uma missão comercial confusa em um plano operacional profissional.
@@ -11,6 +15,7 @@ Especialistas disponíveis:
 STRATEGY: diagnóstico, mercado, concorrência, posicionamento, oferta, escopo e proposta.
 CREATIVE: branding, UX/UI, copy, conteúdo e campanhas.
 TECH: web, e-commerce, integrações, analytics, SEO técnico, código, testes e deploy.
+AI_ENGINEER: arquitetura de agentes, Python, integrações, memória, segurança, testes, observabilidade, comparação de modelos e evolução do VENOM OS.
 GROWTH: aquisição, funil, CRO, canais, métricas e experimentação.
 AUDIT: procura falhas, riscos, premissas frágeis e contradições.
 
@@ -30,6 +35,7 @@ function simulateCommander(mission: string) {
   const text = mission.trim();
   const lower = text.toLowerCase();
   const selected = new Set<string>(['STRATEGY', 'AUDIT']);
+  if (/agente|multiagente|orquestra|engenharia de ia|engenheiro de ia|sdk|python|worker|automação|automacao|claude|codex|mcp|fila|skill/.test(lower)) selected.add('AI_ENGINEER');
   if (/site|landing|loja|e-commerce|ecommerce|shopify|app|sistema|integra|seo/.test(lower)) selected.add('TECH');
   if (/design|marca|branding|copy|conteúdo|conteudo|instagram|social|criativo|banner/.test(lower)) selected.add('CREATIVE');
   if (/lead|venda|matrícula|matricula|tráfego|trafego|funil|convers|aquisi|growth|campanha/.test(lower)) selected.add('GROWTH');
@@ -39,6 +45,7 @@ function simulateCommander(mission: string) {
     'Mapear o estado atual e separar fatos confirmados de hipóteses e informações ausentes.',
     'Definir a solução mínima capaz de atacar o objetivo antes de ampliar escopo.',
   ];
+  if (selected.has('AI_ENGINEER')) plan.push('AI_ENGINEER: inspecionar arquitetura atual; criar plano técnico auditável; definir provas de execução e QA; registrar pendências de acesso e orçamento.');
   if (selected.has('TECH')) plan.push('TECH: definir arquitetura, páginas/fluxos, integrações, analytics e critérios de teste.');
   if (selected.has('CREATIVE')) plan.push('CREATIVE: estruturar mensagem, identidade aplicada, UX, copy e ativos necessários.');
   if (selected.has('GROWTH')) plan.push('GROWTH: desenhar aquisição, conversão, métricas e primeiro ciclo de experimentação.');
@@ -86,6 +93,44 @@ export async function POST(request: Request) {
     const normalizedMission = mission.trim();
     if (normalizedMission.length > MAX_MISSION_CHARACTERS) {
       return NextResponse.json({ error: 'A missão deve ter no máximo 4.000 caracteres.' }, { status: 413 });
+    }
+
+    if (process.env.COMMANDER_MODE === 'queue') {
+      if (process.env.VERCEL_ENV !== 'preview' || process.env.VENOM_QUEUE_ENABLED !== 'true') {
+        return NextResponse.json({ error: 'A fila do AI_ENGINEER está disponível apenas no staging autorizado.' }, {
+          status: 503,
+          headers: { 'Cache-Control': 'no-store' },
+        });
+      }
+
+      const assessment = assessStagingMission(normalizedMission);
+      if (!assessment.ok) {
+        return NextResponse.json({ error: assessment.reason }, { status: 400 });
+      }
+
+      const requestedIdempotencyKey = request.headers.get('idempotency-key')?.trim() || '';
+      const jobId = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestedIdempotencyKey)
+        ? requestedIdempotencyKey.toLowerCase()
+        : randomUUID();
+      const { messageId } = await send(ENGINEERING_QUEUE_TOPIC, {
+        jobId,
+        environment: 'staging',
+        mode: 'offline',
+        mission: assessment.mission,
+      }, {
+        idempotencyKey: `engineer:${jobId}`,
+        retentionSeconds: 3600,
+      });
+
+      return NextResponse.json({
+        jobId,
+        messageId,
+        status: messageId ? 'QUEUED' : 'ACCEPTED_PENDING_INGESTION',
+        mode: 'STAGING_OFFLINE',
+      }, {
+        status: 202,
+        headers: { 'Cache-Control': 'no-store' },
+      });
     }
 
     // Zero-cost development mode. Set COMMANDER_MODE=live when API billing is available.

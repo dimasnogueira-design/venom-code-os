@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedPaths = ["/os", "/api/commander"];
+const protectedPaths = ["/os", "/api/commander", "/api/os"];
 
 function isProtected(pathname: string) {
   return protectedPaths.some((path) => pathname === path || pathname.startsWith(path + "/"));
@@ -79,4 +79,4 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
-export const config = { matcher: ["/os/:path*", "/api/commander/:path*"] };
+export const config = { matcher: ["/os/:path*", "/api/commander/:path*", "/api/os/:path*"] };

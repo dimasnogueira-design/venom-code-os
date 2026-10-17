@@ -1,0 +1,32 @@
+name: VENOM AI Engineer Verification
+
+on:
+  pull_request:
+    paths:
+      - "ai_engineer/**"
+      - "docs/venom-agents/**"
+      - "app/api/commander/route.ts"
+      - ".github/workflows/venom-ai-engineer.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Python version
+        run: python3 --version
+      - name: Commander staging queue policy
+        run: node --test scripts/commander-queue-policy.test.mjs scripts/commander-result-contract.test.mjs
+      - name: Install pinned Python dependencies
+        run: python3 -m pip install -r ai_engineer/requirements.txt
+      - name: Unit regression suite
+        run: python3 -m unittest discover -s ai_engineer/tests -v
+      - name: Compile Python
+        run: python3 -m compileall -q ai_engineer
