@@ -29,9 +29,10 @@ class Capabilities:
         if not relative or os.path.isabs(relative):
             raise AccessDenied("Somente caminhos relativos ao workspace")
         parts = Path(relative).parts
-        if ".." in parts or any(p in BLOCKED_COMPONENTS for p in parts):
+        blocked_components = {component.casefold() for component in BLOCKED_COMPONENTS}
+        if ".." in parts or any(part.casefold() in blocked_components for part in parts):
             raise AccessDenied("Caminho contém segmentos bloqueados")
-        if any(p.startswith(".env") for p in parts) or Path(relative).name.lower() in BLOCKED_NAMES:
+        if any(part.casefold().startswith(".env") for part in parts) or Path(relative).name.casefold() in BLOCKED_NAMES:
             raise AccessDenied("Credenciais bloqueadas")
         if any(mark in Path(relative).name.lower() for mark in ("secret", "token", "password", "private_key")):
             raise AccessDenied("Nome de arquivo confidencial bloqueado")
