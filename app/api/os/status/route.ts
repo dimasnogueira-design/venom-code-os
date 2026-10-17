@@ -21,7 +21,10 @@ function agentStatus(id: string) {
     if (process.env.VERCEL_ENV === "preview" && process.env.COMMANDER_MODE === "queue" && process.env.VENOM_QUEUE_ENABLED === "true") return "CONFIGURED_UNVERIFIED";
     return "SIMULATION_ONLY";
   }
-  if (id === "AI_ENGINEER") return "OFFLINE_WORKER_NOT_HOSTED";
+  if (id === "AI_ENGINEER") {
+    if (process.env.VERCEL_ENV === "preview" && process.env.COMMANDER_MODE === "queue" && process.env.VENOM_QUEUE_ENABLED === "true") return "CONFIGURED_UNVERIFIED";
+    return "OFFLINE_WORKER_NOT_HOSTED";
+  }
   if (id === "SNAKE_WHATSAPP") return "LOCAL_OBSERVATION_ONLY";
   if (id === "SNAKE_PRIVATE") return "NOT_CONNECTED_PRIVATE_DATA_BLOCKED";
   if (id === "GMAIL_SECRETARY") return "NOT_CONNECTED";
