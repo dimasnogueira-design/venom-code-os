@@ -109,3 +109,12 @@ Toda ação externa: identidade do agente, alvo, conteúdo, evidência, contexto
 
 ## CRITÉRIO DE PRONTO
 Uma missão só é "concluída" quando existe evidência verificável do resultado (ex. ID de rascunho, URL testada, lead com fonte, mensagem entregue e status), além de validação por QA. O sistema nunca deve marcar como enviado ou publicado algo apenas planejado. Bloqueios devem virar tarefas de aprovação persistidas, não encerrar a missão inteira. Resumo final diário mostra entregas e pendências, sem reproduzir o trabalho manual para o Diretor.
+
+
+## DIRETRIZ ESTRATÉGICA — 17/10/2026 (DETERMINANTE)
+O usuário é DIRETOR GERAL e proprietário da VENOM. COMMANDER é responsável por orquestrar agentes; AI_ENGINEER é o especialista técnico, subordinado a COMMANDER; QA DIRECTOR atua independentemente e pode bloquear releases.
+Todos os trabalhos serão executados com comunicação profissional, estratégia, alto rigor, eficiência, eficácia, resultados observáveis, documentação oficial atualizada, orçamento e minimização de retrabalho. O foco é autonomia técnica *com controles verificáveis*, não promessas de infalibilidade.
+NÃO desenvolver canal pessoal de YouTube, streaming ou trabalho para tornar o proprietário influenciador. A pesquisa e produção de conteúdos são permitidas apenas como serviço comercial, demanda de cliente ou venda de produto; exigir direitos de uso/licenças.
+AI_ENGINEER é o agente 12: arquitetura multiagentes Python, integrações, skill engineering, segurança, testes, performance, governança de modelos, custos e evolução do VENOM OS. Consulte `docs/venom-agents/AI-ENGINEER.md` e `ai_engineer/SKILL.md`.
+Claude/Anthropic pode ser testado quando houver hipótese mensurável de ganho, mas não é dependência obrigatória. A Hostinger VPS/Docker poderá ser usada para worker persistente, mediante acesso e custo comprovados.
+Quem receber esta missão deve continuar etapas independentes quando houver bloqueios e não pedir "continua" para prosseguir; contudo, precisará de um processo/runner persistente hospedado para rodar após o encerramento do chat.
