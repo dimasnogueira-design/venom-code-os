@@ -61,7 +61,7 @@ Atualizado em 2026-10-17. Documento operacional público sem credenciais ou dado
 - [x] Registrar papel, hierarquia, escopo, métricas e skill do novo especialista.
 - [x] Criar código Python, políticas de acesso e sete testes locais demonstrativos.
 - [x] Criar reconhecimento de missões de engenharia pelo Commander (roteamento conceitual; não é execução live).
-- [ ] Executar testes do módulo sincronizado com a branch via CI do GitHub.
+- [x] Executar testes do módulo sincronizado com a branch via CI do GitHub (7 testes Python e compilação aprovados no workflow #39048165520 em 17/10/2026).
 - [ ] Criar interface autenticada COMMANDER → fila → worker AI_ENGINEER.
 - [ ] Configurar OpenAI API pelo secret manager e orçamento antes de chamadas pagas.
 - [ ] Garantir que APIs pessoais/financeiras jamais se misturem à agência.
@@ -69,3 +69,5 @@ Atualizado em 2026-10-17. Documento operacional público sem credenciais ou dado
 - [ ] Rodar benchmark Claude Code vs OpenAI no mesmo conjunto de tarefas e orçamento para decidir se vale assinar.
 - [ ] Criar relatório de produtividade e evolução tecnológica com resultados verificáveis.
 Nenhuma dessas pendências deve bloquear pesquisas, planos e testes locais sem custo.
+
+- [x] Propor Dependabot semanal para SDK Python e GitHub Actions, sem auto-merge (arquivo ainda em branch/PR, só estará ativo após aprovação/merge).
