@@ -11,6 +11,7 @@ Especialistas disponíveis:
 STRATEGY: diagnóstico, mercado, concorrência, posicionamento, oferta, escopo e proposta.
 CREATIVE: branding, UX/UI, copy, conteúdo e campanhas.
 TECH: web, e-commerce, integrações, analytics, SEO técnico, código, testes e deploy.
+AI_ENGINEER: arquitetura de agentes, Python, integrações, memória, segurança, testes, observabilidade, comparação de modelos e evolução do VENOM OS.
 GROWTH: aquisição, funil, CRO, canais, métricas e experimentação.
 AUDIT: procura falhas, riscos, premissas frágeis e contradições.
 
@@ -30,6 +31,7 @@ function simulateCommander(mission: string) {
   const text = mission.trim();
   const lower = text.toLowerCase();
   const selected = new Set<string>(['STRATEGY', 'AUDIT']);
+  if (/agente|multiagente|orquestra|engenharia de ia|engenheiro de ia|sdk|python|worker|automação|automacao|claude|codex|mcp|fila|skill/.test(lower)) selected.add('AI_ENGINEER');
   if (/site|landing|loja|e-commerce|ecommerce|shopify|app|sistema|integra|seo/.test(lower)) selected.add('TECH');
   if (/design|marca|branding|copy|conteúdo|conteudo|instagram|social|criativo|banner/.test(lower)) selected.add('CREATIVE');
   if (/lead|venda|matrícula|matricula|tráfego|trafego|funil|convers|aquisi|growth|campanha/.test(lower)) selected.add('GROWTH');
@@ -39,6 +41,7 @@ function simulateCommander(mission: string) {
     'Mapear o estado atual e separar fatos confirmados de hipóteses e informações ausentes.',
     'Definir a solução mínima capaz de atacar o objetivo antes de ampliar escopo.',
   ];
+  if (selected.has('AI_ENGINEER')) plan.push('AI_ENGINEER: inspecionar arquitetura atual; criar plano técnico auditável; definir provas de execução e QA; registrar pendências de acesso e orçamento.');
   if (selected.has('TECH')) plan.push('TECH: definir arquitetura, páginas/fluxos, integrações, analytics e critérios de teste.');
   if (selected.has('CREATIVE')) plan.push('CREATIVE: estruturar mensagem, identidade aplicada, UX, copy e ativos necessários.');
   if (selected.has('GROWTH')) plan.push('GROWTH: desenhar aquisição, conversão, métricas e primeiro ciclo de experimentação.');
