@@ -55,3 +55,17 @@ Atualizado em 2026-10-17. Documento operacional público sem credenciais ou dado
 - Bloqueio que depende de credencial ou consentimento vira item explícito no painel; continuar atividades independentes.
 - Não confundir um protótipo agendador com execução automatizada real.
 - Registrar teste e evidência a cada commit.
+
+
+## P0.5 — AI ENGINEER (17/10/2026)
+- [x] Registrar papel, hierarquia, escopo, métricas e skill do novo especialista.
+- [x] Criar código Python, políticas de acesso e sete testes locais demonstrativos.
+- [x] Criar reconhecimento de missões de engenharia pelo Commander (roteamento conceitual; não é execução live).
+- [ ] Executar testes do módulo sincronizado com a branch via CI do GitHub.
+- [ ] Criar interface autenticada COMMANDER → fila → worker AI_ENGINEER.
+- [ ] Configurar OpenAI API pelo secret manager e orçamento antes de chamadas pagas.
+- [ ] Garantir que APIs pessoais/financeiras jamais se misturem à agência.
+- [ ] Hospedar worker persistente em serviço separado, após benchmark de custos e QA (Hostinger VPS é opção, não obrigação).
+- [ ] Rodar benchmark Claude Code vs OpenAI no mesmo conjunto de tarefas e orçamento para decidir se vale assinar.
+- [ ] Criar relatório de produtividade e evolução tecnológica com resultados verificáveis.
+Nenhuma dessas pendências deve bloquear pesquisas, planos e testes locais sem custo.
