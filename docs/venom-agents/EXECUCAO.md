@@ -73,4 +73,16 @@ Atualizado em 2026-10-17. Documento operacional público sem credenciais ou dado
 - [ ] Criar relatório de produtividade e evolução tecnológica com resultados verificáveis.
 Nenhuma dessas pendências deve bloquear pesquisas, planos e testes locais sem custo.
 
+## P0.6 — COMMANDER pessoal e isolamento (17/10/2026)
+- [x] Separar fila/dados privados do Commander em banco local dedicado; não reutilizar schema nem tabelas do CRM SNAKE.
+- [x] Adicionar migração privada versionada e comando `npm run migrate:commander` para PostgreSQL dedicado, sem aplicar migrations Commander ao banco comercial.
+- [x] Ligar o worker local do Commander a um plano offline cifrado, sem chamar modelo, Gmail, WhatsApp ou finanças; registrar auditoria de claim/conclusão/falha.
+- [x] Painel distingue planejamento offline do worker especialista e mantém ações externas desligadas.
+- [x] Evidência local: SNAKE 49/49 testes, TypeScript e builds do serviço/painel aprovados; AI Engineer offline 8/8 testes de segurança e `compileall` aprovados; política de fila VENOM 3/3 aprovada.
+- [ ] Teste HTTP real painel → API → fila → worker após atualizar runtime: processo local escuta em loopback, mas esta sessão não conseguiu alcançar as portas; o navegador do Codex também não alcança `127.0.0.1`.
+- [ ] Conectar fila SNAKE privada ao AI ENGINEER da VENOM em staging. Requer credenciais Vercel Queue/OIDC de staging e implementação/QA do adaptador; a fila Python atual está isolada e não recebe missões pessoais.
+- [ ] Adicionar conexões Gmail OAuth de leitura/rascunhos, canal WhatsApp para observação, fluxo privado de finanças/cobranças, notificações móveis e painel de auditoria de QA.
+- [ ] Fazer deploy Preview da revisão atual e publicar atualização na PR draft existente; nenhum deploy ou push foi feito nesta sessão.
+- [ ] Não tratar o centro de comando como concluído até validar cada integração ponta a ponta com dados sintéticos, gates de aprovação e QA independente.
+
 - [x] Propor Dependabot semanal para SDK Python e GitHub Actions, sem auto-merge (arquivo ainda em branch/PR, só estará ativo após aprovação/merge).
