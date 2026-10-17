@@ -6,6 +6,9 @@ Operação de agentes autônomos e supervisionáveis: recebe objetivos em lingua
 
 **Não confundir** o protótipo de fila Python validado localmente com agentes conectados em produção. Nenhum envio, compra, negociação ou publicação automática está ativo nesta especificação.
 
+## ORDEM ATUAL DO DIRETOR — 17/10/2026
+O primeiro produto é o centro de comando **pessoal e privado** do Diretor. A ordem é: COMMANDER; secretário Gmail para leitura/triagem/rascunhos; SNAKE WhatsApp em observação e gestão de conflito; acompanhamento de cobranças e processos; finanças pessoais segregadas; QA independente. O Diretor precisa consultar e responder pelo celular quando um canal seguro e autenticado estiver pronto. Primeiro provar persistência, retomada, privacidade, fila, revisão e operação contínua. Não iniciar prospecção, CampVet, atendimento de clientes, criação de sites para leads ou CRM comercial antes do centro pessoal estar funcional. Não ativar envio externo autônomo. Dúvidas de identidade de credores/devedores sobem ao Diretor.
+
 ## AGENTES E RESULTADOS EXIGIDOS
 | ID | Agente | Responsabilidade | Entregável |
 |---|---|---|---|
@@ -93,19 +96,20 @@ Toda ação externa: identidade do agente, alvo, conteúdo, evidência, contexto
 - **Runtime:** Python com OpenAI Agents SDK (troca de modelo possível); workers por fila; tarefas duráveis, idempotentes, com retry/backoff e dead-letter queue.
 - **SNAKE:** integrar ao `snakeos` atual após auditoria de segurança do conector; não migrar sessões sem backup e teste.
 - **Dados:** PostgreSQL privado (Supabase novo ou outro serviço), isolando identidades e domínios; RLS por usuário/equipe; criptografia/segredos fora do repositório; política de retenção.
-- **UI:** painel protegido no /os existente; missões, jobs, aprovações, trilha e métricas.
+- **UI:** centro privado do Diretor no SNAKE CONTROL; missões, agentes com estado verdadeiro, fila, aprovações e trilha. O antigo `/os` conceitual não é sistema operacional nem deve mostrar métricas simuladas como execução real.
 - **Operação 24/7:** worker em hospedagem persistente, cron e webhooks; Vercel para interface/preview. Abrir o computador NÃO inicia automaticamente agentes em nuvem; é necessário configurar agendamentos e deployment.
 - **Observabilidade:** testes de regressão, tracing sem dados sigilosos, limites de tokens/créditos, custo diário e mensal, alertas, rollback e kill switch.
 - **Segredos:** conectar OAuth e chaves diretamente no provedor; jamais em chats, repositório público, logs ou frontend.
 
 ## ESTADO VERIFICADO EM 17/10/2026
-- `venom-code-os`: repositório GitHub existe, com /os e Commander; documentação diz que live depende de configuração.
+- `venom-code-os`: repositório GitHub existe; o antigo `/os` conceitual foi retirado do escopo até a entrega do centro pessoal.
 - `snakeos`: v0.6 documentada, notebook/WhatsApp local, testes simulados; auto-send e autonomia desabilitados.
 - Vercel: projetos para venom-code-os e snake-control presentes; isso NÃO prova serviço de agente em produção.
 - Supabase: dois projetos STAY12 inativos; não reutilizar para informações privadas deste sistema.
 - Pacote `venom-agents-starter.zip` foi criado e seus 6 testes unitários locais passaram; apenas planeja e organiza tarefas, SEM conexões externas.
 - Duas automações ChatGPT foram criadas anteriormente: radar de cobranças e prospecção diária. São rotinas de resumo/pesquisa, NÃO equivalem ao VENOM OS implantado.
 - Branch de trabalho: `feat/venom-agents-orchestrator-20261017`.
+- `snakeos`: novo rascunho de Commander privado iniciado em branch/PR separado; fila durável e tela de comando em revisão, worker e integrações ainda desligados.
 
 ## CRITÉRIO DE PRONTO
 Uma missão só é "concluída" quando existe evidência verificável do resultado (ex. ID de rascunho, URL testada, lead com fonte, mensagem entregue e status), além de validação por QA. O sistema nunca deve marcar como enviado ou publicado algo apenas planejado. Bloqueios devem virar tarefas de aprovação persistidas, não encerrar a missão inteira. Resumo final diário mostra entregas e pendências, sem reproduzir o trabalho manual para o Diretor.

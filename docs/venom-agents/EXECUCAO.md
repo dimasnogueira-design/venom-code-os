@@ -64,7 +64,7 @@ Atualizado em 2026-10-17. Documento operacional público sem credenciais ou dado
 - [x] Executar testes do módulo sincronizado com a branch via CI do GitHub (7 testes Python e compilação aprovados no workflow #39048165520 em 17/10/2026).
 - [x] Implementar interface protegida do COMMANDER → fila durável → worker AI_ENGINEER em modo staging/offline; validar entrega local com fila embutida e idempotência.
 - [x] Revalidar a política de fila (3/3), suíte Python (13/13), lint, build e fluxos Core/SNAKE/lead; workflow GitHub #39057671361 passou, e o Preview do commit 56ebd9b ficou READY.
-- [x] Validar a rota conceitual privada CampVet no Preview (HTTP 200, `noindex,nofollow`); nenhum tráfego de contato foi iniciado.
+- [ ] CampVet e outras ações comerciais estão fora da prioridade atual; a rota conceitual foi removida e não deve ser retomada antes do centro pessoal.
 - [ ] Validar publicação e consumo pela fila hospedada no Preview Vercel (depende de OIDC habilitado para a aplicação e credenciais de autenticação do Preview).
 - [ ] Configurar OpenAI API pelo secret manager e orçamento antes de chamadas pagas.
 - [x] Aplicar bloqueios de marcadores de PII/financeiro e impedir dados Gmail/WhatsApp no payload da fila de staging; filtros são uma barreira de escopo, não substituem revisão/controle de acesso.
